@@ -1,0 +1,33 @@
+{
+  "title": "A fixed Pauli-norm threshold for diagonal matrix powering",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "description": "For any fixed Pauli coefficient norm cap above one, the threshold version of estimating a single diagonal entry of a polynomial matrix power is PromiseBQP-complete at inverse-polynomial precision. At cap one, an efficient classical sampling algorithm is known.",
+  "creators": [
+    {
+      "name": "Fredriksen, Daniel",
+      "affiliation": "Quantyra Inc.",
+      "orcid": "0009-0002-9123-7435"
+    }
+  ],
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "quantum computational complexity",
+    "matrix powers",
+    "Pauli decomposition",
+    "BQP-completeness",
+    "classical simulation"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.1103/g5x4-jcsz",
+      "scheme": "doi",
+      "relation": "references"
+    },
+    {
+      "identifier": "10.4086/toc.2007.v003a004",
+      "scheme": "doi",
+      "relation": "references"
+    }
+  ]
+}
