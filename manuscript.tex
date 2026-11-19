@@ -245,7 +245,13 @@ A top unit eigenvector of \(A_U\) has some coordinate \(i\) of squared magnitude
 \]
 The connectors cost \(O(\log T)\) in the logarithm, while \(ks=18T^2\). Since \(|\mathbb E Z|\le1\), the claim follows from \(\mathbb E Z^2\ge(\mathbb E|Z|)^2\).
 \end{proof}
-For the stated dyadic row proposal, cap binary rejection at \(\lceil\log_2(12kM)\rceil+1\) attempts per draw in an \(M\)-trial run, and give an exhausted trial score zero. Conditional on success at a row, the accepted index has exactly the ideal law. Each path retains at least \(11/12\) of its ideal probability by a union bound over its \(k\) draws. Minimizing the expected squared distance from a real center shows that at least \(11/12\) of the ideal variance survives. The source circuit is easy to simulate directly. A single-trial variance lower bound leaves the fixed-confidence sample complexity and other estimators open.
+For the stated dyadic row proposal, cap binary rejection at \(R=\lceil\log_2(12kM)\rceil+1\) attempts per draw in an \(M\)-trial run, and give an exhausted trial score zero. Conditional on success at a row, the accepted index has exactly the ideal law. Each ideal path retains a fraction at least \(1-k2^{-R}\ge11/12\) of its probability. Write \(\nu,\nu'\) for the ideal and capped single-trial score laws on the real examples. Summing retained paths over each score event \(E\) gives \(\nu'(E)\ge(11/12)\nu(E)\), with aborts adding mass at zero. In particular, at the capped mean \(a=\mathbb E_{\nu'} Z\),
+\[
+ \operatorname{Var}_{\nu'}Z=\int(z-a)^2\,d\nu'(z)
+ \ge \tfrac{11}{12}\int(z-a)^2\,d\nu(z)
+ = \tfrac{11}{12}\big(\operatorname{Var}_{\nu}Z+(\mathbb E_\nu Z-a)^2\big).
+\]
+This allows path-dependent retention and a shifted mean. The source circuit is easy to simulate directly. A single-trial variance lower bound leaves the fixed-confidence sample complexity and other estimators open.
 
 \begin{thebibliography}{99}
 \bibitem{jw} D. Janzing and P. Wocjan.
