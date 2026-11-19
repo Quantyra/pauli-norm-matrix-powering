@@ -1,6 +1,6 @@
 # Lean certification plan
 
-The targets are Theorem 1 and Corollary 2 of the [v1.2.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.2.0/manuscript.tex); the exact source digest is recorded in the [review disposition](review/v1.2.0/disposition.md). Pin the tagged source when beginning a certificate. The theorem has two computational claims and a finite-bit hardness construction. Each stage below has its own acceptance test. This plan is prospective; the package contains no kernel-checked proof.
+The targets are Theorems 1 and 3 and Corollaries 2 and 4 of the [v1.3.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.3.0/manuscript.tex); the exact source digest is recorded in the [review disposition](review/v1.3.0/disposition.md). Pin the tagged source when beginning a certificate. The theorem has two computational claims and a finite-bit hardness construction. Each stage below has its own acceptance test. This plan is prospective; the package contains no kernel-checked proof.
 
 ## Parameters and interfaces
 
@@ -25,6 +25,12 @@ Use finite work and clock basis types with a chosen zero-clock vector. Use compl
 3. Produce the position-dependent two-site Pauli list, certify the coefficient intervals and prove the rounded contraction bounds on the full Hilbert space. With \(s=d/(2K)\) and \(m=72KT^2/d\), reuse stages A and E for the fixed-error decision. Check locality after collecting and rounding labels, the unary output cost and both final margins.
 
 The finite rewrite and rational-form examples in `verify_chain.py` provide regression cases. The history isometry and the gap admit independent formalization. The complete complexity statement also requires the filtering and algorithmic interfaces in A and E.
+
+## Theorem 3 and Corollary 4 on weighted sampling
+
+1. For a finite sign sum, prove the Chebyshev identity, the truncation error below \(1/128\), and the weighted recurrence after blocking. Transport a uniform scalar error to a basis diagonal of any Hermitian contraction. Implement the dyadic coefficient tables, signed Pauli draws and capped retries, with polynomial bit cost per trial and total failure at most \(1/4\).
+2. Translate a polynomial about one and prove the binomial bound on the Taylor tail. Rescale Markov's derivative inequality on the short interval ending at one. Derive the lower bound for every polynomial degree, including complex coefficients by taking real parts. Its conclusion concerns coefficient mass.
+3. For Corollary 4, use the installed local projectors to verify their normalized trace bound and the alternating-word energy on the full space. Propagate the coefficient error of the actual rounded matrix, derive \(m\ln\lambda=\Theta(NT^2)\) and instantiate the specified sampler's trial count. An operator-norm perturbation alone cannot certify the required lower bound on Pauli weight.
 
 ## First allocation and handback
 
