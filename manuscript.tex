@@ -19,6 +19,7 @@
 \begin{abstract}
 Given a Hermitian contraction as an explicit sum of Pauli strings, how hard is it to estimate one unnormalized diagonal entry of a polynomial power? Cifuentes et al.\ asked whether BQP-completeness persists under a constant bound on the sum of the absolute Pauli coefficients. For every fixed cap \(c>1\), we prove that distinguishing entries at least \(9/32\) from entries at most \(7/32\) is PromiseBQP-complete, even for positive definite contractions with dyadic coefficients. Any estimate within \(1/32\) decides the reduced instances. At cap one an efficient classical sampler is known. A uniform superposition over the idle half of a cyclic circuit clock gives eigenvalue one exactly half the circuit's acceptance probability as spectral weight. Conjugating by clock Hadamards realizes that weight at a computational basis input and preserves the coefficient norm.
 Hardness also holds on an open chain of 16-dimensional sites with interactions supported on at most two consecutive sites. For actual Pauli weight \(1<\lambda\le3/2\) and power \(m\), classical sampling takes polynomial time at fixed error whenever \(m\ln\lambda=O(\log^2 L)\) in input length \(L\). We give bounds matching up to constants in the exponent on the weighted coefficient mass of uniformly accurate scalar filters.
+On an explicit fixed-width family, even a walk that sums two steps exactly before sampling has exponential single-trial variance at the designated input.
 \end{abstract}
 
 \section{The fixed-cap question}
@@ -33,7 +34,7 @@ For \(0<c\le1\) this decision problem has a bounded-error classical polynomial-t
 \begin{corollary}\label{cor:line}
 For every fixed \(c>1\), the fixed-threshold decision in Theorem~\ref{thm:main} is PromiseBQP-complete on an open line of 16-dimensional sites with position-dependent interactions. The hard instances are positive definite and retain the \(1/32\) estimation tolerance. Each site comprises four qubits, each listed Pauli string has support in at most two consecutive sites, and \(j\) is a computational-basis product input.
 \end{corollary}
-Appendix~\ref{sec:chain} gives the reduction.
+Appendix~\ref{sec:chain} gives the reduction. Appendix~\ref{sec:variance} tests two classical samplers on its rounded matrices.
 
 An estimator can use accuracy \(1/64\) to decide every promised input, including the endpoints. At either endpoint an error of exactly \(1/32\) could return \(1/4\). In the variable-precision version of~\cite{vone}, the input also specifies a rational \(g\) and a positive integer \(r\) in unary, and the promised thresholds are \(g\pm1/r\). Setting \(g=1/4\) and \(r=32\) gives the same hardness reduction. A classical polynomial-time estimator of additive error \(1/32\) on all inputs at any fixed \(c>1\) would imply \(\BPP=\BQP\).
 
@@ -214,6 +215,38 @@ The two coefficient bounds of Theorem~\ref{thm:sampling} apply to its constructe
 \end{proof}
 For comparison, the routed work circuit before clock installation has at most \(r(n-1)\le N\) gate slots. Enumerating pairs of computational paths ending at the same accepting word takes at most \(16^N\,\mathrm{poly}(L_{\rm src})\) time and polynomial space for original input length \(L_{\rm src}\): each two-qubit gate has at most four outgoing amplitudes per path, and the compiled gates permit polynomial-bit exact arithmetic. Since \(T\ge N-1\), even this direct circuit bound is smaller than the coefficient-based trial budget on growing chains.
 
+\section{Returning-path variance on the rounded chains}\label{sec:variance}
+Corollary~\ref{cor:chaincost} bounds a coefficient-based sampling budget. For the ideal signed Pauli trial of Theorem~\ref{thm:sampling}, its actual variance also grows on those images. Let \(d_Z(B)\) denote the weight of the strings composed only of \(I,Z\). The alternating word of Corollary~\ref{cor:chaincost} is a basis word, so its energy lower bound already holds for \(d_Z(H)\). Thus \(d_Z(B_*)=1+s(d_Z(H)-2\mu)\ge1+s(N-13)/32\). Restriction to these labels only decreases the rounding loss, giving \(d_Z(B)\ge1+sN/128\) and \(m\ln d_Z(B)=\Theta(NT^2)\) for \(N\ge26\). Every all-diagonal word returns a real sign of magnitude one. For the trial \(Y\) using any real filter \(f=\sum_k a_kx^k\) within \(1/32\) of \(x^m\) on \([0,1]\), summing its absolute-score expectation over those words alone yields \(\mathbb E|Y|\ge\sum_k|a_k|d_Z(B)^k\). Positivity of the contraction gives \(|\mathbb EY|\le33/32\). Theorem~\ref{thm:sampling} therefore gives \(\operatorname{Var}Y\ge W_{d_Z(B)}(f)^2-(33/32)^2=\exp(\Omega(T\sqrt N))\).
+
+A different walk can combine terms landing on the same basis word before sampling. Put \(C=B^2\) and \(k=m/2\). One row of \(C\) takes at most \(S^2\) ordered Pauli pairs for a list of \(S\) strings. Add the signed fourth-root phases with their dyadic weights at each destination. For a nonzero entry choose transition probability proportional within the row to \(|\Re C_{xy}|+|\Im C_{xy}|\). In \(k\) steps from \(j\), score a returning trajectory by its signed or complex contribution divided by its probability, and every other trajectory by zero. Denote the score by \(Z\). Then \(\mathbb E Z=(B^m)_{jj}\). The integer-weight draws and rational products have polynomial bit cost per trial in the stated encoding. This is computational-basis importance sampling~\cite[Prop.~5.5]{ms} applied after exact two-step collection.
+
+\begin{theorem}\label{thm:twostep}
+At cap \(3/2\) there is a growing family of real, rounded images of Corollary~\ref{cor:line}, from three-wire circuits, for which \(\operatorname{Var}Z\ge\exp(\Omega(T^2))\). This holds for every allowed rounding and every full-support proposal scoring one such trajectory by its contribution divided by its probability.
+\end{theorem}
+\begin{proof}
+Write \(A_{xy}=|C_{xy}|\) entrywise. Summing the absolute contributions of returning paths gives \(\mathbb E|Z|=(A^k)_{jj}\), the path interference quantity of Stahlke~\cite{stahlke}. We lower-bound this particular return.
+
+Use \(d=1/2\) and the published schedule with the zero spectator, a basis-one control and a zero output. Between initial and final identity sweeps, place \(8u\) pairs of sweeps, alternating a target Hadamard and a control-to-target CNOT in the second slot of each sweep (\(u\ge1\)). On this data sector \(XH\) rotates by \(\pi/4\), so the final output is zero. Supply these native adjacent gates directly to the clock. Now \(r=16u+2,\ D=27,\ T=27(r-1)+2,\ s=1/(4K)=\Theta(1/T)\), since the number of installed terms is \(\Theta(r)\). The integer \(k=72KT^2\) is even and \(ms=36T^2\). Both \(B_*\) and \(B\) are contractions, so \(\|C-B_*^2\|\le3\tau\), where \(\tau/s\le1/(9216T^2)\). In particular each entrywise magnitude changes by at most \(3\tau\). The ideal matrix is real, and coefficients with an odd number of \(Y\)'s vanish and stay zero after rounding. Hence the trial is real.
+
+At each legal time use the two computational data words with spectator zero and control one. Before rounding their span over all times is reducing. The ordinary adjacent block of \(B_*\) in this basis is \(sV_t/2\) up to transpose, where \(V_t\) is a permutation or a Hadamard. Put \(\ell=162\) and let \(U\) consist of both words at each time \(2,\ldots,\ell+1\), giving \(p=2\ell\) words. These interior layers have diagonal \(1-s\) and no same-layer off-diagonal transitions. Thus \(B_*^2\) has diagonal at least \((1-s)^2\), and its adjacent block inside \(U\) is exactly \(s(1-s)V_t\) because the two intermediate layers contribute the same gate.
+
+The internal edges contain precisely three Hadamards, at \(t=28,82,136\), since sweep \(a\)'s second slot begins at \(27a+1\). On a uniform two-component vector the entrywise magnitude of a permutation has quadratic form one and that of a Hadamard has quadratic form \(\sqrt2\). Apply the uniform unit vector on \(U\) to the principal submatrix \(A_U\), drop the nonnegative two-layer jumps, and pay at most \(3p\tau\) for perturbation on this fixed set. With \(\gamma=[3(\sqrt2-1)-1]/\ell>0\), the missing boundary edge costs the subtracted one in the numerator. Hence
+\[
+ \lambda_{\max}(A_U)\ge 1-2s+2s(1-s)(1+\gamma)-3p\tau\ge 1+\gamma s
+\]
+for all sufficiently large \(u\).
+
+Each word in \(U\) is connected to \(j\) in at most \(h_0=400\) adjacent steps. Follow the unique forward labels to the first Hadamard, where either exit can be chosen. For later targets, invert the intervening permutations and choose a compatible branch at every intervening Hadamard. For earlier targets, cross the first Hadamard and return across it to either input label, then invert the preceding permutations. Each required ordinary one-step entry has magnitude at least \(s/(2\sqrt2)\); the marked entry has magnitude \(s\sqrt T/(T+1)\). On squaring, these adjacent entries are multiplied by the sum of the two endpoint diagonals, each at least \(1-sK\ge3/4\). After the \(3\tau\) entry error, all connector edges of \(A\) have weight at least \(b=s/(8\sqrt T)\) for large \(u\).
+
+A top unit eigenvector of \(A_U\) has some coordinate \(i\) of squared magnitude at least \(1/p\). Take a connector of length \(h\le h_0\) to that word and its reverse. The diagonal spectral expansion of the even power \(k-2h\) has only nonnegative summands. Keeping those connecting paths and the walks in \(U\) yields
+\[
+ (A^k)_{jj}\ge b^{2h}(A_U^{\,k-2h})_{ii}
+ \ge p^{-1} b^{2h_0}(1+\gamma s)^{k-2h_0}=\exp(\Omega(T^2)).
+\]
+The connectors cost \(O(\log T)\) in the logarithm, while \(ks=18T^2\). Since \(|\mathbb E Z|\le1\), the claim follows from \(\mathbb E Z^2\ge(\mathbb E|Z|)^2\).
+\end{proof}
+For the stated dyadic row proposal, cap binary rejection at \(\lceil\log_2(12kM)\rceil+1\) attempts per draw in an \(M\)-trial run, and give an exhausted trial score zero. Conditional on success at a row, the accepted index has exactly the ideal law. Each path retains at least \(11/12\) of its ideal probability by a union bound over its \(k\) draws. Minimizing the expected squared distance from a real center shows that at least \(11/12\) of the ideal variance survives. The source circuit is easy to simulate directly. A single-trial variance lower bound leaves the fixed-confidence sample complexity and other estimators open.
+
 \begin{thebibliography}{99}
 \bibitem{jw} D. Janzing and P. Wocjan.
 A simple PromiseBQP-complete matrix problem.
@@ -257,5 +290,8 @@ A single-shot measurement of the energy of product states in a translation invar
 \href{https://doi.org/10.1561/0400000065}{doi:10.1561/0400000065}.
 \bibitem{ms} A. Montanaro and C. Shao. Quantum and classical query complexities of functions of matrices.
 \emph{STOC} (2024), 573--584. \href{https://arxiv.org/abs/2311.06999}{arXiv:2311.06999}.
+\bibitem{stahlke} D. Stahlke. Quantum interference as a resource for quantum speedup.
+\emph{Physical Review A} \textbf{90}, 022302 (2014).
+\href{https://doi.org/10.1103/PhysRevA.90.022302}{doi:10.1103/PhysRevA.90.022302}.
 \end{thebibliography}
 \end{document}
