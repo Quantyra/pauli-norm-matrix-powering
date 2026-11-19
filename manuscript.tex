@@ -18,7 +18,7 @@
 \maketitle
 \begin{abstract}
 Given a Hermitian contraction as an explicit sum of Pauli strings, how hard is it to estimate one unnormalized diagonal entry of a polynomial power? Cifuentes et al.\ asked whether BQP-completeness persists under a constant bound on the sum of the absolute Pauli coefficients. For every fixed cap \(c>1\), we prove that distinguishing entries at least \(9/32\) from entries at most \(7/32\) is PromiseBQP-complete, even for positive definite contractions with dyadic coefficients. Any estimate within \(1/32\) decides the reduced instances. At cap one an efficient classical sampler is known. A uniform superposition over the idle half of a cyclic circuit clock gives eigenvalue one exactly half the circuit's acceptance probability as spectral weight. Conjugating by clock Hadamards realizes that weight at a computational basis input and preserves the coefficient norm.
-Hardness also holds on an open chain of 16-dimensional sites with interactions supported on at most two consecutive sites.
+Hardness also holds on an open chain of 16-dimensional sites with interactions supported on at most two consecutive sites. For actual Pauli weight \(1<\lambda\le3/2\) and power \(m\), classical sampling takes polynomial time at fixed error whenever \(m\ln\lambda=O(\log^2 L)\) in input length \(L\). We give matching exponential bounds on the weighted coefficient mass of uniformly accurate scalar filters.
 \end{abstract}
 
 \section{The fixed-cap question}
@@ -39,8 +39,37 @@ An estimator can use accuracy \(1/64\) to decide every promised input, including
 
 The constant-error monomial result in Appendix~A of~\cite{cif} concerns a local measurement divided by the squared norm of the powered state. The constant-error entry result for Chebyshev polynomials in~\cite{cif} uses a different matrix function. Here the output is a single unnormalized entry of the monomial itself. The earlier version of this note~\cite{vone} obtained inverse-polynomial accuracy using a localized clock input. We use the pre-idling technique of guided-Hamiltonian reductions~\cite{glg,cade} to increase the weight visible at a single basis index.
 
-\section{Two estimation algorithms}
-Let \(0<\epsilon\le1/32\) be the desired estimation tolerance. Since \(\norm B\le\lambda(B)\), the coefficient bound alone ensures contraction at cap one. For \(\lambda(B)\le1\), assign probability \(|b_P|\) to each Pauli label and place any remaining mass on a dummy label. These dyadic probabilities can be sampled exactly using their common power-of-two denominator. Draw \(m\) independent labels. Score zero on any dummy draw. Otherwise score the real part of the basis diagonal of the ordered product of the sampled Paulis times the product of their coefficient signs. Pauli multiplication and basis-diagonal evaluation take polynomial time. Expanding the expectation gives \(\bra j B^m\ket j\). The sample belongs to \([-1,1]\), so \(O(\epsilon^{-2})\) repetitions suffice for additive error \(\epsilon/2\) with success at least \(2/3\). This is the Pauli-sampling algorithm of Wang, McArdle and Berta~\cite{wang}, as applied to monomials in~\cite{cif}. For \(\lambda(B)>1\) the same estimator samples with weights \(|b_P|/\lambda(B)\) and rescales by \(\lambda(B)^m\). Integer-weight sampling from the normalized coefficients uses rejection from a binary range with acceptance probability at least \(1/2\); a cap of \(L^2\) retries per draw gives failure at most \(2^{-L^2}\) per draw. This extension is separate from the exact sampler at cap one. For fixed or inverse-polynomial tolerance the sample bound remains polynomial whenever \(m\log\lambda(B)=O(\log L)\). Thus a cap depending on the input length requires a separate analysis.
+\section{Classical and quantum estimation}
+Let \(0<\epsilon\le1/32\) be the desired estimation tolerance. Since \(\norm B\le\lambda(B)\), the coefficient bound alone ensures contraction at cap one. For \(\lambda(B)\le1\), assign probability \(|b_P|\) to each Pauli label and place any remaining mass on a dummy label. These dyadic probabilities can be sampled exactly using their common power-of-two denominator. Draw \(m\) independent labels. Score zero on any dummy draw. Otherwise score the real part of the basis diagonal of the ordered product of the sampled Paulis times the product of their coefficient signs. Pauli multiplication and basis-diagonal evaluation take polynomial time. Expanding the expectation gives \(\bra j B^m\ket j\). The sample belongs to \([-1,1]\), so \(O(\epsilon^{-2})\) repetitions suffice for additive error \(\epsilon/2\) with success at least \(2/3\). This is the Pauli-sampling algorithm of Wang, McArdle and Berta~\cite{wang}, as applied to monomials in~\cite{cif}. For \(\lambda(B)>1\) the same estimator samples with weights \(|b_P|/\lambda(B)\) and rescales by \(\lambda(B)^m\). Integer-weight sampling from the normalized coefficients uses rejection from a binary range with acceptance probability at least \(1/2\); a cap of \(L^2\) retries per draw gives failure at most \(2^{-L^2}\) per draw. This extension is separate from the exact sampler at cap one. For fixed or inverse-polynomial tolerance the sample bound remains polynomial whenever \(m\log\lambda(B)=O(\log L)\). The following theorem extends the fixed-error range.
+
+\begin{theorem}\label{thm:sampling}
+Let \(1<\lambda=\lambda(B)\le3/2\) and \(A=m\ln\lambda\). There is a classical estimator of \(v\) with error at most \(1/32\) and success probability at least \(3/4\), using polynomial space and \(\mathrm{poly}(L)\exp(O(\sqrt{1+A}))\) worst-case bit time. In particular the time is polynomial for \(A=O(\log^2 L)\).
+
+For a polynomial \(f(x)=\sum_k a_kx^k\), write \(W_\lambda(f)=\sum_k|a_k|\lambda^k\). If \(A\ge2\) and \(f\) approximates \(x^m\) within \(1/32\) throughout \([0,1]\), then \(W_\lambda(f)\ge2^{\sqrt A/3-8}\), for every degree of \(f\).
+\end{theorem}
+\begin{proof}
+Choose the largest integer \(b\le m\) with \(\lambda^b\le2\), and write \(m=bq+r\), \(0\le r<b\). If \(b=m\) then \(q=1\); otherwise \((b+1)\ln\lambda>\ln2\) implies \(q\le 2A/\ln2\). We work with a scalar polynomial in \(x^b\) and sample products from the given list for \(B\).
+
+Let \(S_q\) be a sum of \(q\) independent fair signs. With \(y=\cos\theta\), the identity \(\mathbb E e^{i\theta S_q}=y^q\) gives \(y^q=\mathbb E T_{|S_q|}(y)\), where \(T_k\) is the Chebyshev polynomial of the first kind~\cite[Sec.~3]{sv}. Keep terms with \(|S_q|\le D=\min(q,\lceil\sqrt{12q}\rceil)\), with their original probabilities, to form \(p(y)\). The omitted probability is zero for \(D=q\) and at most \(2e^{-D^2/(2q)}\le2e^{-6}<1/128\) otherwise. Thus \(f(x)=x^r p(x^b)\) approximates \(x^m\) within \(1/128\) on \([-1,1]\), since \(|T_k|\le1\) there. The same bound holds for the error in the diagonal by the spectral theorem. The recurrence \(T_{k+1}=2xT_k-T_{k-1}\) gives \(W_2(T_k)\le5^k\) by induction. Consequently
+\[
+ W:=W_\lambda(f)=\lambda^r W_{\lambda^b}(p)\le 2\cdot5^D .
+\]
+
+Sample \(k\) with probability \(|a_k|\lambda^k/W\), then draw \(k\) Pauli terms independently with probabilities \(|b_P|/\lambda\). Multiply the real diagonal of their ordered product at \(j\) by \(W\), the coefficient signs and \(\mathrm{sign}(a_k)\). This is the classical polynomial sampler of~\cite{wang,cif}. Its mean is \(f(B)_{jj}\), and its variance is at most \(W^2\). In \(M=\lceil6\cdot64^2W^2\rceil\) independent trials the sample mean has error at most \(1/64\) except with probability \(1/6\).
+
+All tables can be constructed exactly: \(b\) is found by dyadic comparisons, and the weights of \(|S_q|\) are integer binomial counts divided by \(2^q\). The integer Chebyshev recurrence gives \(O(q+D+\log(q+1))\) numerator bits for the collected coefficients with denominator \(2^q\). The sampled degrees are at most \(m\le L\), so the masses \(|a_k|\lambda^k\) have polynomial bit length. Convert each table to cumulative integer masses. Each draw by binary rejection succeeds with probability at least \(1/2\) per attempt. Cap the attempts at \(\lceil\log_2(12M(m+1))\rceil+1\) and return zero on exhaustion. Coupling to the ideal sampler costs at most \(1/12\) failure probability over all draws. A signed Pauli product acts on the input basis word by a bit flip and a fourth-root phase. Stream the integer scores \(0,\pm1\), multiply their mean by \(W\), clip to \([-1,1]\) and round to the nearest multiple of \(1/256\). Total error on success is at most \(13/512\), with success probability at least \(3/4\). All per-trial bit costs, storage and counter lengths are polynomial in \(L\).
+
+For the converse let \(h=\lambda-1\), and take real coefficients by taking real parts. Expanding \(f(1+u)=\sum_j d_j u^j\) gives
+\[
+ \sum_j|d_j|h^j\le\sum_k |a_k|(1+h)^k=W_\lambda(f).
+\]
+Write \(W=W_\lambda(f)\ge |f(1)|\ge31/32\). On \(I=[1-h/2,1]\), truncating the translated expansion at \(\ell=\lceil\log_2(128W)\rceil\) costs at most \(2^{-(\ell+1)}W\le1/128\). The truncated polynomial \(g\) is within \(5/128\) of \(x^m\) on \(I\), and \(\|g\|_{\infty,I}\le17/16\). Since \(mh\ge A\ge2\), \(1-1/m\in I\). Between this point and 1, \(x^m\) rises by at least \(1-e^{-1}\). Hence \(g\) rises by more than \(1/2\). Markov's derivative inequality on \(I\) now gives
+\[
+ m/2\le\|g'\|_{\infty,I}\le(4/h)\ell^2(17/16).
+\]
+Thus \(\ell^2\ge 2mh/17\ge A/9\), and \(\ell\le\log_2 W+8\) proves the bound.
+\end{proof}
+The two estimates determine the exponential order of the smallest weighted coefficient mass at fixed accuracy. Algorithms using the actual variance or the spectral measure of the particular input may have different costs. For related coefficient bounds in the sparse-access model see~\cite[Sec.~5]{ms}.
 
 For the quantum upper bound, use the spectral-sampling algorithm of~\cite{jw,cif}. Prepare \(\ket j\) and perform phase estimation for \(e^{iB}\). Its eigenphases in signed radians lie in \([-1,1]\), away from the branch cut at \(\pm\pi\). Estimate an eigenvalue \(x\) to \(\epsilon/(8m)\) with failure at most \(\epsilon/32\), clip to \([-1,1]\), and raise the result to \(m\). In the ideal phase-estimation circuit each eigenvector stays in the system register while the ancillas hold its phase estimate. For example, use a constant-confidence estimate with evolution time \(O(m/\epsilon)\) and take the median of \(O(\log(1/\epsilon))\) fresh phase registers within a trial. Conditional on an eigenvector the registers are independent. Tracing out orthogonal system eigenvectors gives the desired spectral mixture on input \(\ket j\). Since \(x\mapsto x^m\) is \(m\)-Lipschitz on this interval, the bias is at most \(\epsilon/8+2\epsilon/32\) in the ideal circuit. Round the scalar to within \(\epsilon/16\) and clip again to \([-1,1]\). With the implementation allowance below, \(O(\epsilon^{-2})\) independent trials still estimate the diagonal to error less than \(\epsilon\) with success at least \(2/3\). Run at half tolerance for the decision problem.
 
@@ -145,6 +174,24 @@ For the inward rounding set \(\tau=2^{-\lceil\log_2(256m)\rceil}\) as above and 
 
 On the full space the difference from \((1-\tau)B_*\) has norm at most \(\tau/2\); thus the rounded matrix is positive definite, has norm at most \(1-\tau/2\), and satisfies the coefficient cap. Telescoping again gives \(\norm{B^m-B_*^m}\le3/512\), including any coupling outside the legal shapes. With the same compilation allowance \(1/48\), the YES and NO diagonal bounds are therefore \(487/1536\) and \(287/1536\), respectively. The quantum estimator in Section~2 gives membership on every promised chain input. This proves the corollary.
 
+\begin{corollary}\label{cor:chaincost}
+For every sufficiently long rounded chain in Corollary~\ref{cor:line}, its actual collected weight satisfies \(m\ln\lambda(B)=\Theta(NT^2)\). On these images the trial count prescribed in the proof of Theorem~\ref{thm:sampling} is \(\exp(\Theta(T\sqrt N))\).
+\end{corollary}
+\begin{proof}
+Write \(\mu=16^{-N}\operatorname{tr}H\) for the identity Pauli coefficient. Each bond has at most seven rewrite projectors of rank at most four on 256 levels (at most two data bits). The marked projector replaces one of them. The two end rules and terminal pin each have rank one on 16 levels. Thus \(\mu\le7(N-1)/64+3/16\). To lower-bound the full-space norm, take the alternating word \(L_0,F_{\rm left},L_0,F_{\rm left},\ldots\), where \(F_{\rm left}\) is AGIK's one-level left-moving flag. On every disjoint displayed pair the transport rule \(L_bF_{\rm left}\leftrightarrow F_{\rm left}R_b\) contributes diagonal \(1/2\), including at the first bond. All other projectors are positive. Hence \(\|H\|\ge\lfloor N/2\rfloor/2\). The word is used only to bound the full-space Pauli weight.
+
+Since \(1-s\mu>0\), collecting the identity term gives
+\[
+ \lambda(B_*)=1+s(\lambda(H)-2\mu)\ge1+s(N-13)/32 .
+\]
+For \(N\ge26\) this is at least \(1+sN/64\). Inward scaling and rounding lose at most \((\lambda(B_*)+1/2)\tau\le2\tau\) in coefficient mass, by the per-slot error above. Since \(ms=36T^2\), \(2\tau\le sN/128\). We obtain \(1+sN/128\le\lambda(B)\le1+sK\le5/4\). Using \((\lambda-1)/\lambda\le\ln\lambda\le\lambda-1\) and \(K=O(N)\) gives
+\[
+ \tfrac{3}{16}NT^2\le m\ln\lambda(B)\le36KT^2 .
+\]
+The two coefficient bounds of Theorem~\ref{thm:sampling} apply to its constructed filter. Substitution in \(M=\lceil6\cdot64^2W^2\rceil\) proves the claim.
+\end{proof}
+For comparison, the routed work circuit before clock installation has at most \(r(n-1)\le N\) gate slots. Enumerating pairs of computational paths ending at the same accepting word takes at most \(16^N\,\mathrm{poly}(L_{\rm src})\) time and polynomial space for original input length \(L_{\rm src}\): each two-qubit gate has at most four outgoing amplitudes per path, and the compiled gates permit polynomial-bit exact arithmetic. Since \(T\ge N-1\), even this direct circuit bound is smaller than the coefficient-based trial budget on growing chains.
+
 \begin{thebibliography}{99}
 \bibitem{jw} D. Janzing and P. Wocjan.
 A simple PromiseBQP-complete matrix problem.
@@ -183,5 +230,10 @@ Analysis and limitations of modified circuit-to-Hamiltonian constructions.
 A single-shot measurement of the energy of product states in a translation invariant spin chain can replace any quantum computation.
 \emph{New Journal of Physics} \textbf{10}, 093004 (2008).
 \href{https://doi.org/10.1088/1367-2630/10/9/093004}{doi:10.1088/1367-2630/10/9/093004}.
+\bibitem{sv} S. Sachdeva and N. K. Vishnoi. Faster algorithms via approximation theory.
+\emph{Foundations and Trends in Theoretical Computer Science} \textbf{9}, 125--210 (2014).
+\href{https://doi.org/10.1561/0400000065}{doi:10.1561/0400000065}.
+\bibitem{ms} A. Montanaro and C. Shao. Quantum and classical query complexities of functions of matrices.
+\emph{STOC} (2024), 573--584. \href{https://arxiv.org/abs/2311.06999}{arXiv:2311.06999}.
 \end{thebibliography}
 \end{document}
