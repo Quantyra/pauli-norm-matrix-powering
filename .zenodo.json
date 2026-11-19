@@ -2,7 +2,7 @@
   "title": "A fixed Pauli-norm threshold for diagonal matrix powering",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "For every fixed Pauli coefficient-norm cap above one, distinguishing a single unnormalized basis diagonal of a polynomial matrix power at thresholds 9/32 and 7/32 is PromiseBQP-complete, even with explicitly listed dyadic coefficients and a positive definite contraction. Any estimate accurate to 1/32 decides the reduced instances. At cap one an efficient classical sampler is known. The fixed-error hardness also holds on an open nearest-neighbor chain of 16-dimensional sites with position-dependent interactions and a computational-basis product input. We extend polynomial-time fixed-error classical estimation near weight one, characterize the weighted coefficient mass of uniformly accurate scalar filters up to constants in the exponent, and evaluate this sampling guarantee on the rounded spin chains.",
+  "description": "For every fixed Pauli coefficient-norm cap above one, distinguishing a single unnormalized basis diagonal of a polynomial matrix power at thresholds 9/32 and 7/32 is PromiseBQP-complete, even with explicitly listed dyadic coefficients and a positive definite contraction. Any estimate accurate to 1/32 decides the reduced instances. At cap one an efficient classical sampler is known. The fixed-error hardness also holds on an open nearest-neighbor chain of 16-dimensional sites with position-dependent interactions and a computational-basis product input. We extend polynomial-time fixed-error classical estimation near weight one, characterize the weighted coefficient mass of uniformly accurate scalar filters up to constants in the exponent, and evaluate this sampling guarantee on the rounded spin chains. On a real three-wire family, scoring a single returning path after summing two steps exactly has exponential variance, including after coefficient rounding.",
   "creators": [
     {
       "name": "Fredriksen, Daniel",
@@ -68,7 +68,12 @@
       "identifier": "10.1145/3618260.3649665",
       "scheme": "doi",
       "relation": "references"
+    },
+    {
+      "identifier": "10.1103/PhysRevA.90.022302",
+      "scheme": "doi",
+      "relation": "references"
     }
   ],
-  "version": "1.3.0"
+  "version": "1.4.0"
 }
