@@ -8,7 +8,7 @@ For a Hermitian contraction with actual Pauli weight $1<\lambda\le3/2$, Theorem 
 
 [Manuscript (PDF)](manuscript.pdf) · [LaTeX source](manuscript.tex) · [Review and dispositions](review/v1.3.0/disposition.md) · [Lean certification plan](lean-certification-plan.md)
 
-[Spin-chain reduction (v1.2.0)](https://doi.org/10.5281/zenodo.24375191) · [All versions on Zenodo](https://doi.org/10.5281/zenodo.24362437) · [Fixed-error theorem (v1.1.0)](https://doi.org/10.5281/zenodo.24373235) · [Inverse-polynomial result (v1.0.0)](https://doi.org/10.5281/zenodo.24362438)
+[Cite the sampling revision (v1.3.0)](https://doi.org/10.5281/zenodo.24376878) · [Spin-chain reduction (v1.2.0)](https://doi.org/10.5281/zenodo.24375191) · [All versions on Zenodo](https://doi.org/10.5281/zenodo.24362437) · [Fixed-error theorem (v1.1.0)](https://doi.org/10.5281/zenodo.24373235) · [Inverse-polynomial result (v1.0.0)](https://doi.org/10.5281/zenodo.24362438)
 
 ## Reproduce the manuscript and numerical examples
 
