@@ -16,52 +16,54 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Given a Hermitian contraction as an explicit sum of Pauli strings, consider estimating a single diagonal entry of its polynomial power to inverse-polynomial additive error. Cifuentes et al.\ asked whether this problem remains BQP-complete at constant Pauli coefficient norm. We show that the threshold promise problem is PromiseBQP-complete for every fixed norm cap \(c>1\), even for positive definite contractions with dyadic coefficients. At cap one an efficient classical sampler is known. The reduction mixes a cyclic circuit clock with the identity. This preserves an eigenvalue whose spectral weight encodes acceptance, while the rest of the spectrum can still be suppressed by a polynomial power. We give a finite-bit reduction that preserves the two norm promises and its decision gap.
+Given a Hermitian contraction as an explicit sum of Pauli strings, how hard is it to estimate one unnormalized diagonal entry of a polynomial power? Cifuentes et al.\ asked whether BQP-completeness persists under a constant bound on the sum of the absolute Pauli coefficients. For every fixed cap \(c>1\), we prove that distinguishing entries at least \(9/32\) from entries at most \(7/32\) is PromiseBQP-complete, even for positive definite contractions with dyadic coefficients. Any estimate within \(1/32\) decides the reduced instances. At cap one an efficient classical sampler is known. A uniform superposition over the idle half of a cyclic circuit clock gives eigenvalue one exactly half the circuit's acceptance probability as spectral weight. Conjugating by clock Hadamards realizes that weight at a computational basis input and preserves the coefficient norm.
 \end{abstract}
 
 \section{The fixed-cap question}
 For a Hermitian qubit operator \(B=\sum_P b_PP\), let \(\lambda(B)=\sum_P|b_P|\), where \(P\) ranges over distinct tensor products of \(I,X,Y,Z\), including the identity. Write \(\norm{B}\) for the operator norm. Janzing and Wocjan encoded a quantum circuit decision into a diagonal entry of a power of a sparse matrix~\cite{jw}. Cifuentes et al.\ gave a Pauli description of such a clock with polynomial coefficient norm and asked whether a constant norm suffices~\cite[Discussion and Sec.~IV\,A]{cif}. Their constant induced matrix \(1\)-norm bound concerns column sums in the computational basis. Here the bound is on coefficients in the Pauli basis.
 
-Fix \(c>0\). The input lists real dyadic coefficients and their Pauli labels, a computational basis index \(j\), a rational threshold \(g\), and positive integers \(m,r\) written in unary. Set \(\epsilon=1/r\), and let \(L\) denote the total input length. This encoding charges the power and the inverse additive tolerance explicitly. The promises are \(\norm{B}\le1\), \(\lambda(B)\le c\), and one of
-\[
-   \bra j B^m\ket j\ge g+\epsilon,\qquad
-   \bra j B^m\ket j\le g-\epsilon .
-\]
-The decision is YES in the first case. Comparing an estimate of additive error \(\epsilon/2\) with \(g\) decides the promised input.
+Fix \(c>0\). The input lists real dyadic coefficients in ordinary binary fixed-point notation, their Pauli labels, a computational basis index \(j\), and a positive integer \(m\) in unary. Write \(L\) for the total input length and \(v=\bra j B^m\ket j\). The promises are \(\norm B\le1\), \(\lambda(B)\le c\), and either \(v\ge9/32\) (YES) or \(v\le7/32\) (NO). The power may equivalently be binary under a specified polynomial resource bound.
 
 \begin{theorem}\label{thm:main}
-For \(0<c\le1\) the diagonal-power threshold problem has a bounded-error classical polynomial-time algorithm. For every fixed \(c>1\) it is PromiseBQP-complete under deterministic classical polynomial-time many-one reductions. The hard instances can be chosen positive definite with dyadic coefficients and an explicitly specified basis input.
+For \(0<c\le1\) this decision problem has a bounded-error classical polynomial-time algorithm. For every fixed \(c>1\) it is PromiseBQP-complete under deterministic classical polynomial-time many-one reductions. Hardness holds for positive definite contractions. On the reduction's images, comparing any estimate within \(1/32\) of \(v\) with \(1/4\) decides the source circuit.
 \end{theorem}
 
-The result concerns fixed caps. In particular, the statement distinguishes cap one from every fixed cap above one under the same inverse-polynomial accuracy convention. An efficient classical estimator on all admitted inputs at any such \(c>1\) would imply \(\BPP=\BQP\). We give the classical endpoint and quantum upper bound for completeness, followed by the construction establishing hardness.
+An estimator can use accuracy \(1/64\) to decide every promised input, including the endpoints. The theorem also gives hardness for the variable-precision problem that admits these fixed parameters. A classical polynomial-time estimator of additive error \(1/32\) on all inputs at any fixed \(c>1\) would imply \(\BPP=\BQP\).
+
+The constant-error monomial result in Appendix~A of~\cite{cif} concerns a local measurement divided by the squared norm of the powered state. The constant-error entry result for Chebyshev polynomials in~\cite{cif} uses a different matrix function. Here the output is a single unnormalized entry of the monomial itself. The earlier version of this note~\cite{vone} obtained inverse-polynomial accuracy using a localized clock input. We use the pre-idling technique of guided-Hamiltonian reductions~\cite{glg,cade} to increase the weight visible at a single basis index.
 
 \section{Two estimation algorithms}
-For \(\lambda(B)\le1\), assign probability \(|b_P|\) to each Pauli label and place any remaining mass on a dummy label. These dyadic probabilities can be sampled exactly using their common power-of-two denominator. Draw \(m\) independent labels. Score zero on any dummy draw. Otherwise score the real part of the basis diagonal of the ordered product of the sampled Paulis times the product of their coefficient signs. Pauli multiplication and basis-diagonal evaluation take polynomial time. Expanding the expectation gives \(\bra j B^m\ket j\). The sample belongs to \([-1,1]\), so \(O(\epsilon^{-2})\) repetitions suffice for additive error \(\epsilon/2\) with success at least \(2/3\). This is the Pauli-sampling algorithm of Wang, McArdle and Berta~\cite{wang}, as applied to monomials in~\cite{cif}. For \(\lambda(B)>1\) the same estimator samples with weights \(|b_P|/\lambda(B)\) and rescales by \(\lambda(B)^m\). Integer-weight sampling from the normalized coefficients uses rejection from a binary range with acceptance probability at least \(1/2\); a polynomial cap on retries gives negligible failure. The sample bound remains polynomial whenever \(m\log\lambda(B)=O(\log L)\). Thus a cap depending on the input length requires a separate analysis.
+Let \(0<\epsilon\le1/32\) be the desired estimation tolerance. For \(\lambda(B)\le1\), assign probability \(|b_P|\) to each Pauli label and place any remaining mass on a dummy label. These dyadic probabilities can be sampled exactly using their common power-of-two denominator. Draw \(m\) independent labels. Score zero on any dummy draw. Otherwise score the real part of the basis diagonal of the ordered product of the sampled Paulis times the product of their coefficient signs. Pauli multiplication and basis-diagonal evaluation take polynomial time. Expanding the expectation gives \(\bra j B^m\ket j\). The sample belongs to \([-1,1]\), so \(O(\epsilon^{-2})\) repetitions suffice for additive error \(\epsilon/2\) with success at least \(2/3\). This is the Pauli-sampling algorithm of Wang, McArdle and Berta~\cite{wang}, as applied to monomials in~\cite{cif}. For \(\lambda(B)>1\) the same estimator samples with weights \(|b_P|/\lambda(B)\) and rescales by \(\lambda(B)^m\). Integer-weight sampling from the normalized coefficients uses rejection from a binary range with acceptance probability at least \(1/2\); a polynomial cap on retries gives negligible failure. For fixed or inverse-polynomial tolerance the sample bound remains polynomial whenever \(m\log\lambda(B)=O(\log L)\). Thus a cap depending on the input length requires a separate analysis.
 
 For the quantum upper bound, use the spectral-sampling algorithm of~\cite{jw,cif}. Prepare \(\ket j\) and perform phase estimation for \(e^{iB}\). Its eigenphases in signed radians lie in \([-1,1]\). Estimate an eigenvalue \(x\) to \(\epsilon/(8m)\) with failure at most \(\epsilon/32\), clip to \([-1,1]\), and raise the result to \(m\). In the ideal phase-estimation circuit each eigenvector stays in the system register while the ancillas hold its phase estimate. One can use fresh phase registers and take their median within a trial. Conditional on an eigenvector the registers are independent. Tracing out orthogonal system eigenvectors gives the desired spectral mixture on input \(\ket j\). Since \(x\mapsto x^m\) is \(m\)-Lipschitz on this interval, the bias is at most \(\epsilon/8+2\epsilon/32\) before scalar rounding. With an additional \(\epsilon/16\) rounding allowance, \(O(\epsilon^{-2})\) independent trials still estimate the diagonal to error less than \(\epsilon\) with success at least \(2/3\). Run at half tolerance for the decision problem.
 
 All required simulation times are polynomial in \(m/\epsilon\). For example, a first-order product formula applies each listed Pauli rotation in each slice. Its operator error at time \(u\) with \(k\) slices is at most \(u^2\sum_{a<b}\norm{[b_aP_a,b_bP_b]}/(2k)\le u^2\lambda(B)^2/(2k)\)~\cite{trotter}. Controlled Pauli rotations and their finite-precision synthesis thus have polynomial gate cost. Allocate total simulation and synthesis error at most \(\epsilon/128\) across a trial, and use ideal phase-estimation failure at most \(\epsilon/64\); these fit the stated failure allowance. Evaluating the scalar power to the prescribed accuracy takes polynomial bit time.
 
 \section{A clock with a distinguished eigenvalue}
-Start with a bounded-error quantum circuit \(C=G_t\cdots G_1\) over \(H,T,\mathrm{CNOT}\) and their inverses, on a work register initially in a basis state \(\ket z\), including the specified zero ancillas. Let \(\Pi\) accept output bit one and let \(p=\bra z C^\dagger\Pi C\ket z\). Put \(M=2^{\lceil\log_2\max(4,2t+1)\rceil}\). On a cyclic clock with \(M\) positions, take in order the gates of \(C\), the reflection \(2\Pi-I=-Z_{\rm out}\), the gates of \(C^\dagger\), and identity padding. Call this list \(V_0,\ldots,V_{M-1}\). Its ordered product is \(R=C^\dagger(2\Pi-I)C\). On the binary clock and work register set
+Start with a bounded-error quantum circuit \(C=G_t\cdots G_1\) over \(H,T,\mathrm{CNOT}\) and their inverses, on a work register initially in a basis state \(\ket z\), including the specified zero ancillas. Let \(\Pi\) accept output bit one and let \(p=\bra z C^\dagger\Pi C\ket z\). Let \(M\) be the least power of two at least \(\max(4,2(2t+1))\) and put \(D=M/2\). Place identity gates on the first \(D\) transitions of a cyclic clock. Next place the gates of \(C\), the reflection \(2\Pi-I=-Z_{\rm out}\), the gates of \(C^\dagger\) in application order, and identity padding. Write \(U_0=I\) and \(U_a=V_{a-1}\cdots V_0\) for the prefixes of these transitions. Their product is \(R=U_M=C^\dagger(2\Pi-I)C\). On the full binary clock and work space set
 \[
  W=\sum_{a=0}^{M-1}\ket{a+1\bmod M}\bra a\otimes V_a,\qquad
- A=\tfrac12(W+W^\dagger),\qquad \ket j=\ket0\ket z .
+ A=\tfrac12(W+W^\dagger).
 \]
-Every clock label has one predecessor and one successor, and each \(V_a\) is unitary. Hence \(W\) is unitary on the full space and \(A\) is a Hermitian contraction.
-
-If \(Rv=\sigma v\), \(\sigma\in\{+1,-1\}\), the vectors \(W^a\ket{0,v}\) for \(0\le a<M\) form an orthonormal ring for unit \(v\). The last edge of the ring carries the sign \(\sigma\). Its Fourier modes have eigenphases \(2\pi k/M\) for \(\sigma=+1\) and \((2k+1)\pi/M\) for \(\sigma=-1\), with \(0\le k<M\). Each mode has squared overlap \(1/M\) with \(\ket{0,v}\). An orthonormal eigenbasis of \(R\) gives orthogonal rings spanning the whole space. Also \((I+R)/2=C^\dagger\Pi C\), so the positive sector has weight \(p\) at the initial state. Taking real parts of the clock eigenvalues shows that the spectral measure of \(A\) at \(j\) has mass exactly \(p/M\) at \(+1\). The ring with closing sign \(-1\) has no phase zero, since \(2k+1\) cannot be a multiple of \(2M\). Every eigenvalue other than \(+1\) is at most
+Every clock label has one predecessor and one successor, so \(W\) is unitary and \(A\) is a Hermitian contraction. For each unit eigenvector \(Rv=\sigma v\), \(\sigma=\pm1\), the Fourier modes of its ring are
 \[
- \cos(\pi/M)\le 1-2/M^2 ,
+ M^{-1/2}\sum_{a=0}^{M-1}e^{-ia\theta}\ket a U_a v,\qquad e^{iM\theta}=\sigma .
 \]
-using \(1-\cos u=2\sin^2(u/2)\). This is the cyclic-clock spectral calculation of~\cite{jw}, with the chosen reflection assigning acceptance to the periodic sector.
+The wrap transition contributes the sign \(\sigma\). These vectors have eigenvalue \(e^{i\theta}\) under \(W\) and \(\cos\theta\) under \(A\). Taking an orthonormal eigenbasis of \(R\) gives a basis of the entire space. Only the periodic rings (\(\sigma=+1\)) have a mode at \(\theta=0\). All other eigenvalues of \(A\) are at most \(\cos(\pi/M)\le1-2/M^2\), by \(1-\cos u=2\sin^2(u/2)\) and the chord bound on sine~\cite{jw}.
+
+Take \(\psi=D^{-1/2}\sum_{a=0}^{D-1}\ket a\ket z\). On its support each \(U_a=I\), so its overlap with the zero-phase mode of the ring for \(v\) is \(\sqrt{D/M}\langle v|z\rangle\). With \(P_1(A)\) the spectral projector at one, summing the squared overlaps gives
+\[
+ \norm{P_1(A)\psi}^2=\frac{D}{M}\bra z\frac{I+R}{2}\ket z
+ =\frac12\bra z C^\dagger\Pi C\ket z=\frac p2 .
+\]
+Hadamards on the low \(\log_2 M-1\) clock bits give a unitary \(Q\) with \(Q\ket j=\psi\) for \(\ket j=\ket0\ket z\). Put \(A'=Q^\dagger A Q\). Conjugation interchanges \(X,Z\) and sends \(Y\) to \(-Y\) on the acted-on bits, giving a signed permutation of Hermitian Pauli strings. Thus \(\lambda(A')=\lambda(A)\), and \(A'\) has spectral weight \(p/2\) at one on the basis input \(j\).
 
 \section{Enforcing the cap and retaining the gap}
 A clock matrix unit is a tensor product of one-bit units. Each one-bit unit has two Pauli coefficients of magnitude \(1/2\); each clock transition therefore has \(M\) Pauli terms of total weight one. Every gate used above has Pauli coefficient sum at most two: \(H=(X+Z)/\sqrt 2\), \(T\) is diagonal with coefficients \((1\pm e^{i\pi/4})/2\), and \(\mathrm{CNOT}\) has four coefficients of magnitude \(1/2\). The same bounds hold for adjoints. Multiplying on disjoint registers, summing over transitions and taking the Hermitian part gives an explicit list for \(A\) with \(O(M^2)\) terms and \(\lambda(A)\le K=2M\).
 
 Choose a fixed inverse power of two \(d\le\min(1/2,c-1)\), and define
 \[
- s=d/K,\qquad B_*=(1-s)I+sA.
+ s=d/K,\qquad B_*=(1-s)I+sA'.
 \]
 Here \(0<s\le1/4\), \((1-2s)I\le B_*\le I\), and
 \[
@@ -69,26 +71,32 @@ Here \(0<s\le1/4\), \((1-2s)I\le B_*\le I\), and
 \]
 The affine map fixes \(+1\). All eigenvalues other than the distinguished value lie in \([0,1-2s/M^2]\). Choose the integer
 \[
- m=\frac{M^2}{2s}\,\lceil\log_2(64M)\rceil=O(M^3\log M/d).
+ m=3M^2/s=6M^3/d .
 \]
-The contribution from the complement of \(+1\) is nonnegative and at most \(\exp(-2sm/M^2)\le1/(64M)\). Thus
+The remaining contribution is nonnegative and at most
+\((1-2s/M^2)^m\le e^{-6}<1/256\). Hence
 \[
- \frac{p}{M}\le \bra j B_*^m\ket j\le \frac{p}{M}+\frac{1}{64M}.
+ \frac p2\le\bra j B_*^m\ket j\le\frac p2+\frac1{256}.
 \]
 
 \paragraph{Finite coefficients.}
-Set \(\tau=2^{-\lceil\log_2(128mM)\rceil}\). Multiply the collected list for \(B_*\) by \(1-\tau\), then round each real coefficient toward zero on a dyadic grid with spacing at most \(\tau/(2S)\), where \(1\le S=O(M^2)\) counts the collected slots, including the identity. Call the result \(B\). The coefficients of the Hermitian part before rounding belong to \(\mathbb Z[1/2]+\sqrt{2}\,\mathbb Z[1/2]\). Only one constant-size gate enters each expanded clock term, and combining terms uses polynomially many additions. Directed rounding on this number field takes polynomial bit time by integer sign comparisons and squaring. The grid requires \(O(\log(SmM))\) fractional bits.
+Set \(\tau=2^{-\lceil\log_2(256m)\rceil}\). Multiply the collected list for \(B_*\) by \(1-\tau\), then round each real coefficient toward zero on a dyadic grid with spacing at most \(\tau/(2S)\), where \(1\le S=O(M^2)\) counts the collected slots, including the identity. Call the result \(B\). The coefficients of the Hermitian part before rounding belong to \(\mathbb Z[1/2]+\sqrt{2}\,\mathbb Z[1/2]\). Only one constant-size gate enters each expanded clock term, and combining terms uses polynomially many additions. Directed rounding on this number field takes polynomial bit time by integer sign comparisons and squaring. The grid requires \(O(\log(Sm))\) fractional bits.
 
 Rounding reduces the absolute coefficient sum. Its operator error relative to \((1-\tau)B_*\) is at most \(\tau/2\), by summing the individual errors. Consequently \(\lambda(B)\le c\), \(\norm{B}\le1-\tau/2\), and its least eigenvalue is at least \((1-\tau)(1-2s)-\tau/2>0\). Telescoping the powers of the two contractions gives
 \[
- \norm{B^m-B_*^m}\le m\norm{B-B_*}\le \tfrac32m\tau\le\frac{3}{256M}.
+ \norm{B^m-B_*^m}\le m\norm{B-B_*}\le \tfrac32m\tau\le\frac{3}{512}.
 \]
-Use the threshold \(g=1/(2M)\) and margin \(\epsilon=1/(16M)\). On YES instances \(p\ge2/3\) and on NO instances \(p\le1/3\). Even allowing acceptance error \(1/48\) from compiling a different standard source gate set, the scaled diagonal \(M\bra j B^m\ket j\) is greater than \(7/12\) on YES and less than \(5/12\) on NO. A single estimate to \(1/(32M)\) therefore decides the source input.
-
-All Pauli labels and coefficients are emitted in classical polynomial time. For every fixed \(c>1\), both \(m\) and the inverse margin are polynomial. If the resource bounds are stated in the number of qubits, one may append \(M\) idle work qubits with identity labels throughout. This leaves the operator norm, coefficient sum and measured diagonal unchanged. This completes the many-one reduction and the proof of Theorem~\ref{thm:main}.
+For the native source gate set the acceptance bounds are \(2/3\) and \(1/3\). For other standard fixed, efficiently computable gate sets, compiling a circuit of \(t_0\ge1\) gates coherently to operator error \(1/96\) up to phase changes its acceptance by at most \(1/48\). Per-gate error \(1/(96t_0)\) suffices by telescoping and standard polynomial-time synthesis at bounded arity. The compiled acceptance is therefore at least \(31/48\) or at most \(17/48\). With all losses included,
+\[
+ v_{\rm YES}\ge\frac{31}{96}-\frac3{512}=\frac{487}{1536}>\frac9{32},
+ \qquad
+ v_{\rm NO}\le\frac{17}{96}+\frac1{256}+\frac3{512}
+ =\frac{287}{1536}<\frac7{32}.
+\]
+The strict inequalities give the claimed \(1/32\) estimation tolerance on the reduction's images. For each fixed \(c>1\) the choice of \(d\) is hardwired. The labels, dyadic coefficients, index and unary power are all emitted in classical polynomial time. If the resource bounds are stated in the number of qubits, one may append \(M\) idle work qubits with identity labels throughout. This leaves the operator norm, coefficient sum and measured diagonal unchanged. This completes the many-one reduction and the proof of Theorem~\ref{thm:main}.
 
 \paragraph{Acknowledgment.} The author used OpenAI Codex for assistance with derivation, drafting and reproducibility checks, and Grok, Claude and Google Antigravity for automated manuscript review.
-\begin{thebibliography}{4}
+\begin{thebibliography}{9}
 \bibitem{jw} D. Janzing and P. Wocjan.
 A simple PromiseBQP-complete matrix problem.
 \emph{Theory of Computing} \textbf{3}, 61--79 (2007).
@@ -105,5 +113,14 @@ Qubit-efficient randomized quantum algorithms for linear algebra.
 Theory of Trotter error with commutator scaling.
 \emph{Physical Review X} \textbf{11}, 011020 (2021).
 \href{https://doi.org/10.1103/PhysRevX.11.011020}{doi:10.1103/PhysRevX.11.011020}.
+\bibitem{glg} S. Gharibian and F. Le Gall.
+Dequantizing the quantum singular value transformation: hardness and applications to quantum chemistry and the quantum PCP conjecture.
+\emph{STOC} (2022). \href{https://arxiv.org/abs/2111.09079}{arXiv:2111.09079}.
+\bibitem{cade} C. Cade, M. Folkertsma, S. Gharibian, R. Hayakawa, F. Le Gall, T. Morimae and J. Weggemans.
+Improved hardness results for the guided local Hamiltonian problem.
+\emph{ICALP} (2023), 32:1--32:19.
+\href{https://doi.org/10.4230/LIPIcs.ICALP.2023.32}{doi:10.4230/LIPIcs.ICALP.2023.32}.
+\bibitem{vone} D. Fredriksen. A fixed Pauli-norm threshold for diagonal matrix powering, version 1.0.0 (2026).
+\href{https://doi.org/10.5281/zenodo.24362438}{doi:10.5281/zenodo.24362438}.
 \end{thebibliography}
 \end{document}
