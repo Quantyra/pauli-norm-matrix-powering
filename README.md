@@ -6,6 +6,8 @@ Given an explicit sum of Pauli operators, how hard is it to estimate a single di
 
 [Manuscript (PDF)](manuscript.pdf) · [LaTeX source](manuscript.tex) · [Review and dispositions](review/disposition.md) · [Lean certification plan](lean-certification-plan.md)
 
+[Cite the reviewed preprint, v1.0.0](https://doi.org/10.5281/zenodo.24362438) · [All versions on Zenodo](https://doi.org/10.5281/zenodo.24362437)
+
 ## Reproduce the manuscript and numerical examples
 
 The PDF was built with Tectonic 0.17.0. From this directory, run `tectonic manuscript.tex` with the environment variable `SOURCE_DATE_EPOCH` set to `1794960000` for the recorded build timestamp. A fresh environment may download the standard TeX bundle.
