@@ -1,4 +1,6 @@
-# Three-lens review and disposition
+# Three-lens review and disposition for v1.0.0
+
+This record accompanies the [inverse-polynomial-precision release](https://github.com/Quantyra/pauli-norm-matrix-powering/tree/v1.0.0). The [fixed-error revision](v1.1.0/disposition.md) has its own source and reviewer reports.
 
 **Grok, Claude and AGY each marked the revised manuscript ready for preprint release.** The reviewers received the full LaTeX source in isolated, single-turn sessions. The initial source was [430cb58](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/430cb5841793a04a2d2add757e61d011f4475681/manuscript.tex). Each reviewer also received the [revised source](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/988f17351b893e803dce674df7e304ec8f345fb4/manuscript.tex) and its own first report. The two source digests are recorded with the reports. All reviews used installed vendor CLIs. The prompts supplied the published question and requested mathematical scrutiny of the manuscript. Literature priority and journal peer review require separate evidence.
 

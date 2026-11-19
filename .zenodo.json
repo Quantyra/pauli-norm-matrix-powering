@@ -2,7 +2,7 @@
   "title": "A fixed Pauli-norm threshold for diagonal matrix powering",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "For any fixed Pauli coefficient norm cap above one, the threshold version of estimating a single diagonal entry of a polynomial matrix power is PromiseBQP-complete at inverse-polynomial precision. At cap one, an efficient classical sampling algorithm is known.",
+  "description": "For every fixed Pauli coefficient-norm cap above one, distinguishing a single unnormalized basis diagonal of a polynomial matrix power at thresholds 9/32 and 7/32 is PromiseBQP-complete, even with explicitly listed dyadic coefficients and a positive definite contraction. Any estimate accurate to 1/32 decides the reduced instances. At cap one an efficient classical sampler is known.",
   "creators": [
     {
       "name": "Fredriksen, Daniel",
@@ -38,6 +38,12 @@
       "identifier": "10.1103/PhysRevX.11.011020",
       "scheme": "doi",
       "relation": "references"
+    },
+    {
+      "identifier": "10.4230/LIPIcs.ICALP.2023.32",
+      "scheme": "doi",
+      "relation": "references"
     }
-  ]
+  ],
+  "version": "1.1.0"
 }
