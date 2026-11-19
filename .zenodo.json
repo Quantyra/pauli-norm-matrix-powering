@@ -28,6 +28,16 @@
       "identifier": "10.4086/toc.2007.v003a004",
       "scheme": "doi",
       "relation": "references"
+    },
+    {
+      "identifier": "10.1103/PRXQuantum.5.020324",
+      "scheme": "doi",
+      "relation": "references"
+    },
+    {
+      "identifier": "10.1103/PhysRevX.11.011020",
+      "scheme": "doi",
+      "relation": "references"
     }
   ]
 }
