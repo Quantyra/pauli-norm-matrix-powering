@@ -1,6 +1,6 @@
 # Lean certification plan
 
-The target is Theorem 1 of the [v1.1.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.1.0/manuscript.tex); the exact source digest is recorded in the [review disposition](review/v1.1.0/disposition.md). Pin the tagged source when beginning a certificate. The theorem has two computational claims and a finite-bit hardness construction. Each stage below has its own acceptance test. This plan is prospective; the package contains no kernel-checked proof.
+The targets are Theorem 1 and Corollary 2 of the [v1.2.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.2.0/manuscript.tex); the exact source digest is recorded in the [review disposition](review/v1.2.0/disposition.md). Pin the tagged source when beginning a certificate. The theorem has two computational claims and a finite-bit hardness construction. Each stage below has its own acceptance test. This plan is prospective; the package contains no kernel-checked proof.
 
 ## Parameters and interfaces
 
@@ -17,6 +17,14 @@ Use finite work and clock basis types with a chosen zero-clock vector. Use compl
 | C. Finite Pauli output | Enumerate the binary matrix units and bounded-arity gate decompositions. Prove \(O(M^2)\) terms, coefficient weight at most \(2M\), and the fixed-cap bound after mixing. Give exact sign comparison and directed rounding for dyadic pairs \(u+v\sqrt2\), preserving positivity and both norms after inward scaling. | Prove that the low-clock Hadamards prepare the idle superposition and permute signed Pauli labels; verify the identity term and duplicate collection, and charge the written labels and grid bits. Check that states with no support on the tested input still satisfy the operator promise. |
 | D. Reduction | Assemble A–C as an actual classical map from an encoded bounded-error circuit to the encoded threshold instance, valid on all source YES and NO inputs. Prove bit time and output length polynomial for each fixed \(h\). | Acceptance must imply the correct side of \(g\), including source compilation slack, optional qubit padding, and the position of \(m\) in the input encoding. Supplying the acceptance probability to the construction invalidates the reduction. |
 | E. Algorithms and class statement | Formalize or import a proved Pauli-product estimator on the unit ball, finite random-bit sampling, concentration, and the quantum spectral estimator for every promised contraction. Compose with D in the chosen PromiseBQP model. | Capture the actual assumptions on phase-estimation error, Hamiltonian simulation, uniform circuit synthesis and classical reductions. A missing complexity library remains an explicit dependency. A–D give only their stated coverage until these interfaces compile and match the paper. |
+
+## Corollary 2 on the spin chain
+
+1. Encode the local tags in four qubits per site. Prove in both directions that the modified first bond acts only between the marked start and its successor on the spectator-zero computation, and prove the one-site reject projector acts only at the terminal shape. An extra transition on a reachable shape falsifies this stage.
+2. Construct the legal-history isometry and its intertwining relation for arbitrary nonspectator data. Recover the zero-energy weight \(p/2\) and prove the accepting and terminally pinned rejecting forms have positive spectrum at least \(1/(6T^2)\) on the visible complement. Track the global operator bounds separately from the gap on the legal subspace.
+3. Produce the position-dependent two-site Pauli list, certify the coefficient intervals and prove the rounded contraction bounds on the full Hilbert space. With \(s=d/(2K)\) and \(m=72KT^2/d\), reuse stages A and E for the fixed-error decision. Check locality after collecting and rounding labels, the unary output cost and both final margins.
+
+The finite rewrite and rational-form examples in `verify_chain.py` provide regression cases. The history isometry and the gap admit independent formalization. The complete complexity statement also requires the filtering and algorithmic interfaces in A and E.
 
 ## First allocation and handback
 

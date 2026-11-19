@@ -2,7 +2,7 @@
   "title": "A fixed Pauli-norm threshold for diagonal matrix powering",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "For every fixed Pauli coefficient-norm cap above one, distinguishing a single unnormalized basis diagonal of a polynomial matrix power at thresholds 9/32 and 7/32 is PromiseBQP-complete, even with explicitly listed dyadic coefficients and a positive definite contraction. Any estimate accurate to 1/32 decides the reduced instances. At cap one an efficient classical sampler is known.",
+  "description": "For every fixed Pauli coefficient-norm cap above one, distinguishing a single unnormalized basis diagonal of a polynomial matrix power at thresholds 9/32 and 7/32 is PromiseBQP-complete, even with explicitly listed dyadic coefficients and a positive definite contraction. Any estimate accurate to 1/32 decides the reduced instances. At cap one an efficient classical sampler is known. The fixed-error hardness also holds on an open nearest-neighbor chain of 16-dimensional sites with position-dependent interactions and a computational-basis product input.",
   "creators": [
     {
       "name": "Fredriksen, Daniel",
@@ -43,7 +43,22 @@
       "identifier": "10.4230/LIPIcs.ICALP.2023.32",
       "scheme": "doi",
       "relation": "references"
+    },
+    {
+      "identifier": "10.1007/s00220-008-0710-3",
+      "scheme": "doi",
+      "relation": "references"
+    },
+    {
+      "identifier": "10.22331/q-2018-09-19-94",
+      "scheme": "doi",
+      "relation": "references"
+    },
+    {
+      "identifier": "10.1088/1367-2630/10/9/093004",
+      "scheme": "doi",
+      "relation": "references"
     }
   ],
-  "version": "1.1.0"
+  "version": "1.2.0"
 }
