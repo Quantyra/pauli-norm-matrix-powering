@@ -1,6 +1,6 @@
 # Lean certification plan
 
-The targets are Theorems 1 and 3 and Corollaries 2 and 4 of the [v1.3.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.3.0/manuscript.tex); the exact source digest is recorded in the [review disposition](review/v1.3.0/disposition.md). Pin the tagged source when beginning a certificate. The theorem has two computational claims and a finite-bit hardness construction. Each stage below has its own acceptance test. This plan is prospective; the package contains no kernel-checked proof.
+This plan covers Theorems 1, 3, 5 and 6 and Corollaries 2 and 4 in the [v1.5.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.5.0/manuscript.tex). Pin the tagged source and the digest in the [review disposition](review/v1.5.0/disposition.md) at the start of certification. Each stage has its own acceptance test. Formal certification is prospective.
 
 ## Parameters and interfaces
 
@@ -35,6 +35,12 @@ The finite rewrite and rational-form examples in `verify_chain.py` provide regre
 ## Appendix B on variance at the marked input
 
 First formalize the finite path identity for the absolute score of a full-support proposal and the diagonal-word contribution to the Pauli trial. Then show that a real symmetric principal submatrix with top eigenvalue at least \(1+\gamma s\), a bounded-length connector from \(j\), and an even remaining power gives the stated diagonal growth. The application requires reconstructing the three-wire clock in the computational data basis, bounding rounded entries before taking magnitudes, and paying both connector weights. The first certificate could cover the abstract finite-path lemma. Certification of Theorem 5 also requires proving those concrete clock hypotheses. Track ideal trials and capped rejection separately.
+
+## Theorem 6 on fixed-confidence testing
+
+1. For two finite score laws, formalize the common mass from paths avoiding a set and the shared point mass at zero after a visit. Deduce a total variation bound from the two exceptional nonzero masses. Prove the independent product bound and its consequence for randomized decisions. Capped paths require a separate subprobability domination lemma.
+2. Prove the rounded matrix has the indicated work-string blocks. Check the modular sequence of seven-sweep widths, exact ordinary grid multiples, local Pauli mask separation, marked boundary support and preservation of legal layers after collection. A wrong mask, hidden work dependence in the first two sites or an off-history exit invalidates this application.
+3. Square the block matrix before taking row magnitudes. Factor the finite trajectory law into clock and data kernels. Given a complete returning clock path that visited the late gate, prove the last crossings of all \(q\) cuts reset to independent fair bits. Combine these results with the two source promises and the decoder's observation contract. A certificate for the abstract testing inequality alone leaves the rounded-input theorem open.
 
 ## First allocation and handback
 

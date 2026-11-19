@@ -2,7 +2,7 @@
   "title": "A fixed Pauli-norm threshold for diagonal matrix powering",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "For every fixed Pauli coefficient-norm cap above one, distinguishing a single unnormalized basis diagonal of a polynomial matrix power at thresholds 9/32 and 7/32 is PromiseBQP-complete, even with explicitly listed dyadic coefficients and a positive definite contraction. Any estimate accurate to 1/32 decides the reduced instances. At cap one an efficient classical sampler is known. The fixed-error hardness also holds on an open nearest-neighbor chain of 16-dimensional sites with position-dependent interactions and a computational-basis product input. We extend polynomial-time fixed-error classical estimation near weight one, characterize the weighted coefficient mass of uniformly accurate scalar filters up to constants in the exponent, and evaluate this sampling guarantee on the rounded spin chains. On a real three-wire family, scoring a single returning path after summing two steps exactly has exponential variance, including after coefficient rounding.",
+  "description": "For every fixed Pauli coefficient-norm cap above one, distinguishing a single unnormalized basis diagonal of a polynomial matrix power at thresholds 9/32 and 7/32 is PromiseBQP-complete, even with explicitly listed dyadic coefficients and a positive definite contraction. Any estimate accurate to 1/32 decides the reduced instances. At cap one an efficient classical sampler is known. The fixed-error hardness also holds on an open nearest-neighbor chain of 16-dimensional sites with position-dependent interactions and a computational-basis product input. We extend polynomial-time fixed-error classical estimation near weight one, characterize the weighted coefficient mass of uniformly accurate scalar filters up to constants in the exponent, and evaluate this sampling guarantee on the rounded spin chains. On a real three-wire family, scoring a single returning path after summing two steps exactly has exponential variance, including after coefficient rounding. On a separate matched YES/NO pair with q work bits, the specified two-step row sampler gives exact single-score laws at total variation distance at most 2^(-q). A decoder receiving only independent scalar scores needs at least 2^q/3 trials for success 2/3 on both inputs, including with capped draws.",
   "creators": [
     {
       "name": "Fredriksen, Daniel",
@@ -73,7 +73,12 @@
       "identifier": "10.1103/PhysRevA.90.022302",
       "scheme": "doi",
       "relation": "references"
+    },
+    {
+      "identifier": "10.48550/arXiv.quant-ph/0610235",
+      "scheme": "doi",
+      "relation": "references"
     }
   ],
-  "version": "1.4.0"
+  "version": "1.5.0"
 }
