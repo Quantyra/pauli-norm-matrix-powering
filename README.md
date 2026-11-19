@@ -6,7 +6,7 @@ For every fixed Pauli coefficient-norm cap $c>1$, distinguishing whether a singl
 
 [Manuscript (PDF)](manuscript.pdf) · [LaTeX source](manuscript.tex) · [Review and dispositions](review/v1.2.0/disposition.md) · [Lean certification plan](lean-certification-plan.md)
 
-[All versions on Zenodo](https://doi.org/10.5281/zenodo.24362437) · [Fixed-error theorem (v1.1.0)](https://doi.org/10.5281/zenodo.24373235) · [Inverse-polynomial result (v1.0.0)](https://doi.org/10.5281/zenodo.24362438)
+[Cite the spin-chain revision (v1.2.0)](https://doi.org/10.5281/zenodo.24375191) · [All versions on Zenodo](https://doi.org/10.5281/zenodo.24362437) · [Fixed-error theorem (v1.1.0)](https://doi.org/10.5281/zenodo.24373235) · [Inverse-polynomial result (v1.0.0)](https://doi.org/10.5281/zenodo.24362438)
 
 ## Reproduce the manuscript and numerical examples
 
