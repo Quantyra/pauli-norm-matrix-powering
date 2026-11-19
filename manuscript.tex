@@ -4,6 +4,7 @@
 \usepackage[hidelinks]{hyperref}
 \hypersetup{pdftitle={A fixed Pauli-norm threshold for diagonal matrix powering},pdfauthor={Daniel Fredriksen}}
 \newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
 \newcommand{\ket}[1]{\lvert #1\rangle}
 \newcommand{\bra}[1]{\langle #1\rvert}
 \newcommand{\norm}[1]{\lVert #1\rVert}
@@ -17,6 +18,7 @@
 \maketitle
 \begin{abstract}
 Given a Hermitian contraction as an explicit sum of Pauli strings, how hard is it to estimate one unnormalized diagonal entry of a polynomial power? Cifuentes et al.\ asked whether BQP-completeness persists under a constant bound on the sum of the absolute Pauli coefficients. For every fixed cap \(c>1\), we prove that distinguishing entries at least \(9/32\) from entries at most \(7/32\) is PromiseBQP-complete, even for positive definite contractions with dyadic coefficients. Any estimate within \(1/32\) decides the reduced instances. At cap one an efficient classical sampler is known. A uniform superposition over the idle half of a cyclic circuit clock gives eigenvalue one exactly half the circuit's acceptance probability as spectral weight. Conjugating by clock Hadamards realizes that weight at a computational basis input and preserves the coefficient norm.
+Hardness also holds on an open chain of 16-dimensional sites with interactions supported on at most two consecutive sites.
 \end{abstract}
 
 \section{The fixed-cap question}
@@ -27,6 +29,11 @@ Fix \(c>0\). The input lists real dyadic coefficients in ordinary binary fixed-p
 \begin{theorem}\label{thm:main}
 For \(0<c\le1\) this decision problem has a bounded-error classical polynomial-time algorithm. For each fixed \(c>1\), with the cap external to the input, it is PromiseBQP-complete under deterministic classical polynomial-time many-one reductions. Hardness holds for positive definite contractions. On the reduction's images, comparing any estimate within \(1/32\) of \(v\) with \(1/4\) decides the source circuit.
 \end{theorem}
+
+\begin{corollary}\label{cor:line}
+For every fixed \(c>1\), Theorem~\ref{thm:main} holds on an open line of 16-dimensional sites with position-dependent interactions. Each site comprises four qubits, each listed Pauli string has support in at most two consecutive sites, and \(j\) is a computational-basis product input.
+\end{corollary}
+Appendix~\ref{sec:chain} gives the reduction.
 
 An estimator can use accuracy \(1/64\) to decide every promised input, including the endpoints. At either endpoint an error of exactly \(1/32\) could return \(1/4\). In the variable-precision version of~\cite{vone}, the input also specifies a rational \(g\) and a positive integer \(r\) in unary, and the promised thresholds are \(g\pm1/r\). Setting \(g=1/4\) and \(r=32\) gives the same hardness reduction. A classical polynomial-time estimator of additive error \(1/32\) on all inputs at any fixed \(c>1\) would imply \(\BPP=\BQP\).
 
@@ -96,7 +103,49 @@ For the native source gate set the acceptance bounds are \(2/3\) and \(1/3\). Fo
 The strict inequalities give the claimed \(1/32\) estimation tolerance on the reduction's images. For each fixed \(c>1\) the choice of \(d\) is hardwired. The labels, dyadic coefficients, index and unary power are all emitted in classical polynomial time. If the resource bounds are stated in the number of qubits, one may append \(M\) idle work qubits with identity labels throughout. This leaves the operator norm, coefficient sum and measured diagonal unchanged. This completes the many-one reduction and the proof of Theorem~\ref{thm:main}.
 
 \paragraph{Acknowledgment.} The author used OpenAI Codex for assistance with derivation, drafting and reproducibility checks, and Grok, Claude and Google Antigravity for automated manuscript review.
-\begin{thebibliography}{9}
+\appendix
+\section{A nearest-neighbor chain}\label{sec:chain}
+We prove Corollary~\ref{cor:line} using the twelve-state circuit clock of Aharonov, Gottesman, Irani and Kempe (AGIK)~\cite[Sec.~2, Fig.~1, Fact~2.2]{agik} and the weighted history-state principle of Bausch and Crosson~\cite[Lemma~4]{bc}. Earlier work extracts a circuit decision from a resolved energy measurement on a product state of a spin chain~\cite{jwz}. Here the observable is a single unnormalized moment at fixed additive accuracy.
+
+\paragraph{The first transition.}
+Compile the source circuit into sweeps of adjacent gates on \(n\ge3\) logical qubits. Add a leftmost spectator fixed at zero, keep all its gates trivial, and route the output to the rightmost data qubit. Swap routing and identity padding cost polynomially many gates. Use \(r\ge2\) sweeps, including initial and final identity sweeps. The AGIK clock has \(N=nr\) physical sites and \(T=n(2n+3)(r-1)+n-1\) transitions. In a gate sweep, write \(G_b\) for the gate marker carrying bit \(b\), and \(R_b,L_b\) for data to its right and left. Within an aligned block the gate rule changes the tags \(GR\) to \(LG\). The flags moving data between rounds have other tags.
+
+Add one symbol \(S\) at site 1 in place of the initial \(G_0\). On physical bond \((1,2)\) only, replace the first identity-gate rule by \(S R_b\leftrightarrow L_0G_b\), \(b=0,1\). Its positive local term is
+\[
+ h_\star=\frac1{T+1}\sum_{b=0}^1 \ket{u_b}\bra{u_b},\qquad
+ \ket{u_b}=\ket{S R_b}-\sqrt T\,\ket{L_0G_b}.
+\]
+It is a projector, since the two normalized vectors are orthogonal. At the marked start all other sites are passive, and every old rewrite has an active flag on each side. The new edge is the only move. At its successor the old inverse on that bond has been removed. The new inverse applies to \(L_0G_b\), and vanishes on \(L_1G_b\). The gate marker visits site 2 exactly once: it sweeps right in the first block, between sweeps only the transport and turning flags are active, and all later gate sweeps start at sites \(n+1\) or farther right. Thus the new inverse fires only at the first successor. These tag tests apply to every data superposition. AGIK's Fact~2.2 gives the unique legal forward and backward moves everywhere else. The original first bond already had unique gate patterns in both directions; the extra symbol makes the inverse domain explicit.
+
+For each remaining rewrite, let \(J_{\rm in}\) and \(J_{\rm out}\) embed its local data coordinates in the two orthogonal tag sectors, and let \(V\) be its prescribed unitary data map. Use the local projector
+\((J_{\rm in}-J_{\rm out}V)(J_{\rm in}-J_{\rm out}V)^\dagger/2\).
+This includes the open-end rules on one site. Form \(H\) by summing these terms, \(h_\star\), and the one-site rejection penalty \(\ket{G_0}\bra{G_0}\) at site \(N\). The gate marker reaches that site only at the terminal time, as the last sweep finishes. Thirteen symbols fit into sixteen computational levels; each local projector vanishes on unused levels of its support. The initial physical word \(j\) is a computational-basis product state.
+
+\paragraph{Spectral weight and rejecting-sector gap.}
+Identify \(\ket t\ket w\) with the legal shape at time \(t\) containing the propagated data for spectator zero and arbitrary nonspectator input \(w\). Distinct times have orthogonal shapes. Propagation and the final readout preserve this subspace, hence it reduces the Hermitian \(H\). In these coordinates
+\[
+ H_{\rm legal}=L_T\otimes I+\ket T\bra T\otimes Q,\qquad Q=C^\dagger(I-\Pi)C ,
+\]
+where \(C\) is the routed circuit on the nonspectator data. The first term of \(L_T\) is the projector onto the span of \(\ket0-\sqrt T\,\ket1\). Each subsequent term is the projector onto the span of \(\ket i-\ket{i+1}\). Their common kernel is spanned by a unit vector with squared amplitudes \(\pi_0=1/2\), \(\pi_t=1/(2T)\) for \(t\ge1\), all amplitudes positive. The penalty removes this mode on \({\rm ran}\,Q\). On basis input \(z\) the squared projection of \(j\) at energy zero is therefore \(\pi_0\bra z(I-Q)\ket z=p/2\).
+
+For clock amplitudes \(\sqrt{\pi_t}f_t\), the squared norm is \(\sum_t\pi_t|f_t|^2\). The propagation energy is \(E=\sum_{i=0}^{T-1}q_i|f_i-f_{i+1}|^2\), with \(q_0=1/[2(T+1)]\) and \(q_i=1/(4T)\) for \(i>0\). In the accepting sector orthogonal to the zero mode, \(f\) has weighted mean zero. Its variance is at most \(\sum_t\pi_t|f_t-f_T|^2\le4T^2 E\), by Cauchy--Schwarz on the paths to \(T\) and \(\sum_i q_i^{-1}\le4T^2\). In the rejecting sector, append one grounded vertex at value zero after \(T\), with edge weight \(\pi_T\). The same inequality gives
+\[
+ \sum_t\pi_t|f_t|^2\le(4T^2+2T)(E+\pi_T|f_T|^2).
+\]
+The positive energies visible from \(j\) are consequently at least \(1/(6T^2)\). Other shape sectors may have smaller positive energies.
+
+\paragraph{The explicit chain input.}
+Encode each site in four qubits. If \(J\) is the number of installed terms, then \(J=O(N)\) since AGIK's list per bond has constant size. A local projector \(h\) acts on \(k\le8\) qubits. Its Pauli coefficients satisfy \(\sum_P|b_P|^2=2^{-k}{\rm tr}(h^2)\le1\), giving \(\lambda(h)\le2^k\le256\). Let \(K\) be the least power of two at least \(256J\), so \(0\le H\le KI\) on the full encoded space and \(\lambda(H)\le K\). With the same fixed dyadic \(0<d\le\min(1/2,c-1)\) as in the main proof choose
+\[
+ s=d/(2K),\qquad B_*=I-sH,\qquad m=72KT^2/d .
+\]
+Then \((1-d/2)I\le B_*\le I\), \(\lambda(B_*)\le1+d/2\le c\), and the contribution of positive visible energies to the moment is between zero and \((1-s/(6T^2))^m\le e^{-6}<1/256\).
+
+For the inward rounding set \(\tau=2^{-\lceil\log_2(256m)\rceil}\) as above and take at most \(S_0=1+4^8J\) collected slots in \((1-\tau)B_*\). Choose the largest inverse power of two \(\eta\le\tau/(4S_0)\). Enclose each real coefficient in an interval of width at most \(\eta\); emit zero if it contains zero, otherwise round the nearer endpoint toward zero on the \(\eta\)-grid. This decreases each absolute coefficient and introduces error at most \(2\eta\) per slot. Certified enclosures take polynomial bit time: each normalized local trace uses constant-size matrices, the weighted projector uses \(\sqrt T/(T+1)\), and the native gate entries use only fixed algebraic constants. Bisection for \(\sqrt T,\sqrt2\) with outward rounding to local contribution width \(\eta/(2J)\) suffices before summing. Rounding creates no new Pauli labels, so each term remains on at most two consecutive encoded sites. The unary power, the list, and \(O(\log(mS_0))\) fractional bits per emitted coefficient have polynomial total cost at fixed \(c\).
+
+On the full space the difference from \((1-\tau)B_*\) has norm at most \(\tau/2\); thus the rounded matrix is positive definite, has norm at most \(1-\tau/2\), and satisfies the coefficient cap. Telescoping again gives \(\norm{B^m-B_*^m}\le3/512\), including any coupling outside the legal shapes. With the same compilation allowance \(1/48\), the YES and NO diagonal bounds are therefore \(487/1536\) and \(287/1536\), respectively. The algorithms in Section~2 apply to the entire promised input class. This proves the corollary.
+
+\begin{thebibliography}{99}
 \bibitem{jw} D. Janzing and P. Wocjan.
 A simple PromiseBQP-complete matrix problem.
 \emph{Theory of Computing} \textbf{3}, 61--79 (2007).
@@ -122,5 +171,17 @@ Improved hardness results for the guided local Hamiltonian problem.
 \href{https://doi.org/10.4230/LIPIcs.ICALP.2023.32}{doi:10.4230/LIPIcs.ICALP.2023.32}.
 \bibitem{vone} D. Fredriksen. A fixed Pauli-norm threshold for diagonal matrix powering, version 1.0.0 (2026).
 \href{https://doi.org/10.5281/zenodo.24362438}{doi:10.5281/zenodo.24362438}.
+\bibitem{agik} D. Aharonov, D. Gottesman, S. Irani and J. Kempe.
+The power of quantum systems on a line.
+\emph{Communications in Mathematical Physics} \textbf{287}, 41--65 (2009).
+\href{https://doi.org/10.1007/s00220-008-0710-3}{doi:10.1007/s00220-008-0710-3}.
+\bibitem{bc} J. Bausch and E. Crosson.
+Analysis and limitations of modified circuit-to-Hamiltonian constructions.
+\emph{Quantum} \textbf{2}, 94 (2018).
+\href{https://doi.org/10.22331/q-2018-09-19-94}{doi:10.22331/q-2018-09-19-94}.
+\bibitem{jwz} D. Janzing, P. Wocjan and S. Zhang.
+A single-shot measurement of the energy of product states in a translation invariant spin chain can replace any quantum computation.
+\emph{New Journal of Physics} \textbf{10}, 093004 (2008).
+\href{https://doi.org/10.1088/1367-2630/10/9/093004}{doi:10.1088/1367-2630/10/9/093004}.
 \end{thebibliography}
 \end{document}
