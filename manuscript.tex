@@ -5,6 +5,7 @@
 \hypersetup{pdftitle={A fixed Pauli-norm threshold for diagonal matrix powering},pdfauthor={Daniel Fredriksen}}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{samplingcor}{Corollary}[theorem]
 \newcommand{\ket}[1]{\lvert #1\rangle}
 \newcommand{\bra}[1]{\langle #1\rvert}
 \newcommand{\norm}[1]{\lVert #1\rVert}
@@ -19,6 +20,7 @@
 \begin{abstract}
 Given a Hermitian contraction as an explicit sum of Pauli strings, how hard is it to estimate one unnormalized diagonal entry of a polynomial power? Cifuentes et al.\ asked whether BQP-completeness persists under a constant bound on the sum of the absolute Pauli coefficients. For every fixed cap \(c>1\), we prove that distinguishing entries at least \(9/32\) from entries at most \(7/32\) is PromiseBQP-complete, even for positive definite contractions with dyadic coefficients. Any estimate within \(1/32\) decides the reduced instances. At cap one an efficient classical sampler is known. A uniform superposition over the idle half of a cyclic circuit clock gives eigenvalue one exactly half the circuit's acceptance probability as spectral weight. Conjugating by clock Hadamards realizes that weight at a computational basis input and preserves the coefficient norm.
 Hardness also holds on an open chain of 16-dimensional sites with interactions supported on at most two consecutive sites. For actual Pauli weight \(1<\lambda\le3/2\) and power \(m\), classical sampling takes polynomial time at fixed error whenever \(m\ln\lambda=O(\log^2 L)\) in input length \(L\). We give bounds matching up to constants in the exponent on the weighted coefficient mass of uniformly accurate scalar filters.
+If deleting weight \(\beta_*\le1/4\) makes the Pauli list commute, a classical algorithm finds a basis yielding polynomial time for \(m\beta_*=O(\log^2 L)\). The weight cap alone still permits PromiseBQP-hard instances.
 On an explicit fixed-width family, even a walk that sums two steps exactly before sampling has exponential single-trial variance at the designated input. On a different matched pair with \(q\) work bits and explicit inward rounding, distinguishing YES from NO with probability \(2/3\) from this row sampler alone requires at least \(2^q/3\) independent scalar scores.
 \end{abstract}
 
@@ -71,6 +73,15 @@ Write \(W=W_\lambda(f)\ge |f(1)|\ge31/32\). On \(I=[1-h/2,1]\), truncating the t
 Thus \(\ell^2\ge 2mh/17\ge A/9\), and \(\ell\le\log_2 W+8\) proves the bound.
 \end{proof}
 The two estimates determine the exponential order of the smallest weighted coefficient mass at fixed accuracy. Algorithms using the actual variance or the spectral measure of the particular input may have different costs. For related coefficient bounds in the sparse-access model see~\cite[Sec.~5]{ms}.
+
+\begin{samplingcor}\label{cor:remainder}
+For an explicitly listed Hermitian contraction \(B\), let \(\beta_*\) be the minimum total absolute coefficient weight whose deletion leaves a pairwise commuting list. If \(\beta_*\le1/4\), a randomized classical algorithm estimates \(\bra j B^m\ket j\) within \(1/32\) with probability at least \(3/4\), in polynomial space and worst-case bit time
+\[
+ \mathrm{poly}(L)\exp\!\left(O\!\left(\sqrt{1+m\ln(1+2\beta_*)}\right)\right).
+\]
+The algorithm obtains its basis from the input list. In particular, the time is polynomial for \(m\beta_*=O(\log^2 L)\), with no separate cap on \(\lambda(B)\).
+\end{samplingcor}
+Appendix~\ref{sec:remainder} proves this by evaluating the full diagonal at each sampled step in the discovered basis. On a growing two-local family, deleting the remaining terms changes the diagonal of the power by at least \(1/2-o(1)\), while the original Pauli and computational-basis row sampling bounds are superpolynomial.
 
 For the quantum upper bound, use the spectral-sampling algorithm of~\cite{jw,cif}. Prepare \(\ket j\) and perform phase estimation for \(e^{iB}\). Its eigenphases in signed radians lie in \([-1,1]\), away from the branch cut at \(\pm\pi\). Estimate an eigenvalue \(x\) to \(\epsilon/(8m)\) with failure at most \(\epsilon/32\), clip to \([-1,1]\), and raise the result to \(m\). In the ideal phase-estimation circuit each eigenvector stays in the system register while the ancillas hold its phase estimate. For example, use a constant-confidence estimate with evolution time \(O(m/\epsilon)\) and take the median of \(O(\log(1/\epsilon))\) fresh phase registers within a trial. Conditional on an eigenvector the registers are independent. Tracing out orthogonal system eigenvectors gives the desired spectral mixture on input \(\ket j\). Since \(x\mapsto x^m\) is \(m\)-Lipschitz on this interval, the bias is at most \(\epsilon/8+2\epsilon/32\) in the ideal circuit. Round the scalar to within \(\epsilon/16\) and clip again to \([-1,1]\). With the implementation allowance below, \(O(\epsilon^{-2})\) independent trials still estimate the diagonal to error less than \(\epsilon\) with success at least \(2/3\). Run at half tolerance for the decision problem.
 
@@ -131,6 +142,9 @@ For the native source gate set the acceptance bounds are \(2/3\) and \(1/3\). Fo
  =\frac{287}{1536}<\frac7{32}.
 \]
 The strict inequalities give the claimed \(1/32\) estimation tolerance on the reduction's images. For each fixed \(c>1\) the choice of \(d\) is hardwired. The labels, dyadic coefficients, index and unary power are all emitted in classical polynomial time. If the resource bounds are stated in the number of qubits, one may append \(M\) idle work qubits with identity labels throughout. This leaves the operator norm, coefficient sum and measured diagonal unchanged. This completes the many-one reduction and the proof of Theorem~\ref{thm:main}.
+
+\paragraph{Hardness under the deletion-weight cap alone.}
+Choose \(c=5/4\) and \(d=1/4\) in the cyclic construction. After inward rounding, deleting all nonidentity terms costs at most \((1-\tau)s\lambda(A')\le d\) and leaves a scalar identity. Thus the same reduction has \(\beta_*\le1/4\), unary \(m=24M^3\), and the strict estimation margins just proved. The fixed-threshold decision under this weight cap alone is PromiseBQP-complete. For membership on every promised contraction, \(|b_P|=2^{-n}|\operatorname{Tr}(PB)|\le1\), so \(\lambda(B)\) is at most the number of listed terms and the spectral estimator in Section~2 has polynomial cost at error \(1/64\). A classical polynomial-time \(1/32\)-estimator under the cap alone would imply \(\BPP=\BQP\). Corollary~\ref{cor:remainder} gives a sufficient growth condition on the power; its optimal range is open.
 
 \paragraph{Acknowledgment.} The author used OpenAI Codex for assistance with derivation, drafting and reproducibility checks, and Grok, Claude and Google Antigravity for automated manuscript review.
 \appendix
@@ -313,7 +327,55 @@ Any decoder, including a randomized one, that succeeds with probability \(2/3\) 
 
 The construction has \(S_0=O(n)\), \(T=\Theta(n^2)\), and unary \(m=\Theta(n^5)\). Each Pauli string has \(4N\) letters and each coefficient has \(O(\log n)\) fractional bits. A squared row costs at most \(S_0^2\) pair contributions, and the real score is a product of at most \(k\) signed dyadic row sums with total bit length \(O(k\log n)\). The retry cap in Appendix~\ref{sec:variance} uses \(O(\log(kM))\) attempts per row and \(O(\log n)\) random bits per attempt. The lower bound is exponential in \(q\) and superpolynomial in the full written input length. Even the first width \(n=42\) has \(m=36{,}424{,}602{,}825{,}523{,}200\). The accompanying verifier reconstructs selected exact rows there without writing the unary power or running a full trial. Theorem~\ref{thm:twostep} covers every full-support proposal and allowed rounding on its variance witness. Theorem~\ref{thm:confidence} concerns the specified row proposal on a different pair with one explicit rounding. Direct inspection of the last gate distinguishes these source circuits.
 
+\section{Sampling the noncommuting remainder}\label{sec:remainder}
+
+\paragraph{Constructing the basis.}
+Give each nonzero collected Pauli label \(P\) weight \(|b_P|\). Join labels whose binary symplectic product is one. A vertex cover deletes exactly the conflicts, so its minimum weight is \(\beta_*\). Use the factor-two weighted cover algorithm~\cite{cover}. On each as-yet uncovered edge, charge the smaller residual weight to both endpoints, subtract the charge from both residuals and select the newly tight endpoints. Every cover pays at least the sum of edge charges, since a vertex's incident charges sum to at most its weight. The selected vertices cost at most twice that sum. With \(s_0\) labels, the \(O(s_0^2 n)\) binary comparisons and the dyadic weight operations have polynomial bit cost.
+
+Conjugate the commuting labels outside the cover to \(Z\)-type by a Clifford \(U\). Binary elimination selects independent generators. At each pivot use local Cliffords, CNOTs and a swap on the unused qubits to map a generator to one \(Z\). Commutation excludes \(X,Y\) at this pivot on every remaining generator. Clear its \(Z\) factors by generator multiplication and repeat. Track signs when conjugating the original list~\cite{ddm}. In \(A=UBU^\dagger=D+\sum_P r_PP\), put \emph{every} diagonal term in \(D\). Then \(d(x)=D_{xx}=A_{xx}\) is a dyadic sum of signed parities with \(|d(x)|\le1\) by contraction. All off-diagonal terms came from the cover, so \(\beta=\sum_P|r_P|\le2\beta_*\).
+
+\paragraph{Sampling the two endpoints.}
+Write \(\psi(x)=\langle x|U|j\rangle\). The stabilizers of this state are generated by the \(n\) conjugates of \((-1)^{j_i}Z_i\). Let \(V\) be the span of their binary flip masks, of dimension \(t\). The kernel of this projection gives \(n-t\) independent signed diagonal constraints on the support. Their parity equations have a nonempty affine solution set of dimension \(t\). Its direction contains \(V\) by commutation, hence equals \(V\). The stabilizer translations connect all its points with unit relative amplitude modulus. Thus Gaussian elimination and \(t\) fair bits sample \(x\) uniformly on this set, with law \(|\psi(x)|^2\). For a terminal word \(y\), return \(\rho(x,y)=0\) if \(v=x\oplus y\notin V\). Otherwise use the same generator table to lift \(v\) to a signed stabilizer \(\gamma X^v Z^p\), retaining its fourth-root phase under multiplication. Since it fixes the state,
+\[
+ \rho(x,y)=\frac{\overline{\psi(y)}}{\overline{\psi(x)}}=
+ \bar\gamma(-1)^{p\cdot x}.
+\]
+This exact, bounded ratio specializes stabilizer amplitude formulas~\cite{ddm} and the overlap sampler for computationally tractable states~\cite[Thm.~3]{vdn}. Each sampled word below has at most one nonzero entry per row and column.
+
+\paragraph{Estimating the power.}
+Set \(w=1+\beta\). Independently for \(k\) steps choose \(D\) with probability \(1/w\) or an off-diagonal \(P\) with probability \(|r_P|/w\). Starting at the sampled \(x\), a \(D\) step multiplies the accumulated scalar by the current \(d\). A Pauli step follows its flip and multiplies by its action phase and \(\mathrm{sign}(r_P)\). If the signed word maps \(\ket x\) to \(a(x)\ket{y(x)}\), its normalized score is \(Z_k=\operatorname{Re}(a(x)\rho(x,y(x)))\), of absolute value at most one. The identity
+\[
+ |\psi(x)|^2\rho(x,y)=\overline{\psi(y)}\psi(x)
+\]
+on the sampled support and expansion of the independent steps yield \(w^k\mathbb E Z_k=\bra j B^k\ket j\). Input points off support contribute zero to that matrix element.
+
+For \(1<w\le3/2\), use the polynomial \(f=\sum_k a_k x^k\) in the proof of Theorem~\ref{thm:sampling} with envelope \(w\). It has degree at most \(m\), bias below \(1/128\) and \(W_w(f)\le2\cdot5^{O(\sqrt{1+m\ln w})}\). At \(w=1\) take \(f=x^m\) and \(W=1\). Write \(W=W_w(f)\), draw \(k\) with probability \(|a_k|w^k/W\), and output \(W\,\mathrm{sign}(a_k)Z_k\). The ideal mean is \(f(B)_{jj}\), with variance at most \(W^2\). As in Theorem~\ref{thm:sampling}, \(\lceil6\cdot64^2W^2\rceil\) trials suffice for sampling error \(1/64\) at failure probability \(1/6\), and capping every integer-mass draw as there adds at most \(1/12\) failure. If \(F\) is the largest input fractional bit count, the normalized scores have common denominator \(2^{mF}\). Stream their signed sum (including the sign of \(a_k\)) with polynomially many bits, then return its exact rational mean scaled by \(W\). With probability at least \(3/4\) the error is at most \(3/128\). This proves Corollary~\ref{cor:remainder}, including failed draws and all basis, phase and arithmetic costs. The weighted coefficient cost for sparse rows in a supplied basis also occurs in~\cite[Prop.~5.5]{ms}.
+
+\paragraph{A family that requires the remainder.}
+Use \(n=2^\ell\) data bits, selector bit zero, \(j=0^{n+1}\), \(m=n^2\), \(\eta=\ell^2/m\) and \(\alpha=1/2\). Take \(\ell\) sufficiently large. Set \(p_i=(n+2i-1)/(2n^2)\) for \(1\le i\le n\), so \(\sum_i p_i=1\). For \(T=X,Z\) put
+\[
+ K_T=\frac{I-T_0}{2}\,\frac{I-\sum_i p_iT_i}{2},\qquad
+ H_T=I-\alpha K_T,\qquad B=(1-\eta)H_X+\eta H_Z .
+\]
+Each \(K_T\) is a product of commuting positive contractions, hence \(I/2\le B\le I\). The \(O(n)\) dyadic labels and unary power give \(L=\Theta(n^2)\). Every single-bit flip appears in the original row graph. The identity coefficient of \(H_T\) is \(1-\alpha/4\); its coefficients on \(T_0,T_i,T_0T_i\) are \(\alpha/4,\alpha p_i/4,-\alpha p_i/4\). Removing the nonidentity \(Z\) terms costs \(\beta_0=3\alpha\eta/4\). Each nonidentity \(X\) term individually costs at least \((1-\eta)\alpha/(8n)>2\beta_0\) eventually. Every nonidentity \(Z\) term conflicts with a single-site \(X\). Hence every cover within twice the optimum removes precisely those \(Z\) terms, and \(\beta_*=\beta_0\). In particular \(m\beta_*=3\ell^2/8=\Theta(\log^2 L)\).
+
+The vector \(\ket{+}_0\ket{0^n}\) is fixed by both \(H_X\) and \(H_Z\): the selector kills \(K_X\) and the data kill \(K_Z\). Its squared overlap with \(\ket j\) is \(1/2\), giving \(B^m_{jj}\ge1/2\) by positivity. Deletion leaves \(D_0=(1-\eta)H_X+\eta(1-\alpha/4)I\), with \(\norm{D_0}=1-\alpha\eta/4\). Thus \((D_0^m)_{jj}\le\exp(-\alpha\ell^2/4)\). Meanwhile \(\lambda(B)=5/4\), so the converse in Theorem~\ref{thm:sampling} gives \(W_{\lambda}(f)\ge 2^{\Omega(\sqrt m)}\) for a uniformly accurate scalar filter.
+
+For the original one- and two-step row samplers, let \(\|\cdot\|_\infty\) denote the maximum absolute row sum. Every row of \(H_X\) has absolute sum \(5/4\) from distinct shifts. Since \(H_Z\) is diagonal, \(\|B-H_X\|_\infty\le9\eta/4\) and \(\|B\|_\infty\le5/4\). Every row of \(I-2\alpha K_X\) has absolute sum \(1+\alpha\). As \(\|K_X\|_\infty=1\), every row of \(H_X^2=I-2\alpha K_X+\alpha^2K_X^2\) has absolute sum at least \(1+\alpha-\alpha^2=5/4\). Also \(\|B^2-H_X^2\|_\infty\le(5/2)(9\eta/4)\). Thus every row of \(C=|B^h|\) (entrywise) has sum at least \(9/8\) for \(h=1,2\) and large \(n\). For even \(u=m/h\), symmetry and Cauchy--Schwarz give
+\[
+ (C^u)_{jj}=\|C^{u/2}\ket j\|_2^2
+ \ge 2^{-(n+1)}\|C^{u/2}\ket j\|_1^2
+ \ge 2^{-(n+1)}(9/8)^u .
+\]
+This counts absolute returning path weights, including all signs before taking the absolute value of each block entry. The ideal full-support signed row trial therefore has variance at least \(((C^u)_{jj})^2-1=\exp(\Omega(m))\), by the second-moment argument of Appendix~\ref{sec:variance}. This compares specified estimators. The example permits algorithms that exploit other structure.
+
 \begin{thebibliography}{99}
+\bibitem{cover} R. Bar-Yehuda and S. Even. A linear-time approximation algorithm for the weighted vertex cover problem.
+\emph{Journal of Algorithms} \textbf{2}, 198--203 (1981). \href{https://doi.org/10.1016/0196-6774(81)90020-1}{doi:10.1016/0196-6774(81)90020-1}.
+\bibitem{ddm} J. Dehaene and B. De Moor. Clifford group, stabilizer states, and linear and quadratic operations over GF(2).
+\emph{Physical Review A} \textbf{68}, 042318 (2003). \href{https://doi.org/10.1103/PhysRevA.68.042318}{doi:10.1103/PhysRevA.68.042318}.
+\bibitem{vdn} M. Van den Nest. Simulating quantum computers with probabilistic methods.
+\emph{Quantum Information and Computation} \textbf{11}, 784--812 (2011). \href{https://arxiv.org/abs/0911.1624}{arXiv:0911.1624}.
 \bibitem{jw} D. Janzing and P. Wocjan.
 A simple PromiseBQP-complete matrix problem.
 \emph{Theory of Computing} \textbf{3}, 61--79 (2007).
