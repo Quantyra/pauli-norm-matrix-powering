@@ -1,6 +1,6 @@
 # Lean certification plan
 
-This plan covers Theorems 1, 3, 5 and 6 and Corollaries 2 and 4 in the [v1.5.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.5.0/manuscript.tex). Pin the tagged source and the digest in the [review disposition](review/v1.5.0/disposition.md) at the start of certification. Each stage has its own acceptance test. Formal certification is prospective.
+This plan covers Theorems 1, 3, 5 and 6 and Corollaries 2, 3.1 and 4 in the [v1.6.0 manuscript](https://github.com/Quantyra/pauli-norm-matrix-powering/blob/v1.6.0/manuscript.tex). Pin the tagged source and the digest in the [review disposition](review/v1.6.0/disposition.md) at the start of certification. Each stage has its own acceptance test. Formal certification is prospective.
 
 ## Parameters and interfaces
 
@@ -41,6 +41,14 @@ First formalize the finite path identity for the absolute score of a full-suppor
 1. For two finite score laws, formalize the common mass from paths avoiding a set and the shared point mass at zero after a visit. Deduce a total variation bound from the two exceptional nonzero masses. Prove the independent product bound and its consequence for randomized decisions. Capped paths require a separate subprobability domination lemma.
 2. Prove the rounded matrix has the indicated work-string blocks. Check the modular sequence of seven-sweep widths, exact ordinary grid multiples, local Pauli mask separation, marked boundary support and preservation of legal layers after collection. A wrong mask, hidden work dependence in the first two sites or an off-history exit invalidates this application.
 3. Square the block matrix before taking row magnitudes. Factor the finite trajectory law into clock and data kernels. Given a complete returning clock path that visited the late gate, prove the last crossings of all \(q\) cuts reset to independent fair bits. Combine these results with the two source promises and the decoder's observation contract. A certificate for the abstract testing inequality alone leaves the rounded-input theorem open.
+
+## Corollary 3.1 and the commuting-remainder comparison
+
+For Corollary 3.1, reuse the scalar filter and capped sampling stages. The following obligations can be certified separately.
+
+1. Identify deletion sets with weighted vertex covers on collected Pauli labels. Certify the dual charge invariant, factor two, tableau elimination, and inclusion of every diagonal term. Prove that pinching gives a contraction on the full space. Track the cost of constructing the conflict graph and the Clifford basis from explicit dyadics.
+2. For a stabilizer tableau, construct affine support, sampling map and signed translation lifts. Prove the conjugate endpoint identity and the unbiased mean for each degree, including zero diagonal factors and endpoints outside the support. Use a state with imaginary relative phase to distinguish the two possible conjugation conventions. Combine with the scalar filter and carry the retry, bit, space and success bounds through the signed dyadic accumulator.
+3. On the growing two-local family certify the optimum cover, the common eigenvector, the deletion gap and the absolute row bounds on both powers. Reuse the return-score second-moment lemma for the ideal walks. For cap-only hardness reuse the cyclic reduction at \(d=1/4\) and its strict rounded margins, then bound every collected coefficient by one to recover all-input quantum membership. Separate the finite operator identities from any eventual costed complexity certificate.
 
 ## First allocation and handback
 
