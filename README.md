@@ -10,7 +10,7 @@ Corollary 3.1 uses the least coefficient weight $\beta_*$ whose deletion leaves 
 
 [Manuscript (PDF)](manuscript.pdf) · [LaTeX source](manuscript.tex) · [Review and dispositions](review/v1.6.0/disposition.md) · [Lean certification plan](lean-certification-plan.md)
 
-[Cite the fixed-confidence revision (v1.5.0)](https://doi.org/10.5281/zenodo.24379198) · [Cite the variance revision (v1.4.0)](https://doi.org/10.5281/zenodo.24378072) · [Cite the sampling revision (v1.3.0)](https://doi.org/10.5281/zenodo.24376878) · [Spin-chain reduction (v1.2.0)](https://doi.org/10.5281/zenodo.24375191) · [All versions on Zenodo](https://doi.org/10.5281/zenodo.24362437) · [Fixed-error theorem (v1.1.0)](https://doi.org/10.5281/zenodo.24373235) · [Inverse-polynomial result (v1.0.0)](https://doi.org/10.5281/zenodo.24362438)
+[Cite the commuting-remainder revision (v1.6.0)](https://doi.org/10.5281/zenodo.24383306) · [Cite the fixed-confidence revision (v1.5.0)](https://doi.org/10.5281/zenodo.24379198) · [Cite the variance revision (v1.4.0)](https://doi.org/10.5281/zenodo.24378072) · [Cite the sampling revision (v1.3.0)](https://doi.org/10.5281/zenodo.24376878) · [Spin-chain reduction (v1.2.0)](https://doi.org/10.5281/zenodo.24375191) · [All versions on Zenodo](https://doi.org/10.5281/zenodo.24362437) · [Fixed-error theorem (v1.1.0)](https://doi.org/10.5281/zenodo.24373235) · [Inverse-polynomial result (v1.0.0)](https://doi.org/10.5281/zenodo.24362438)
 
 ## Reproduce the manuscript and numerical examples
 
